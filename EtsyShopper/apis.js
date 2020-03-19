@@ -8,14 +8,11 @@ export const fetchAllShops = () => {
     .get(`${baseUrl}`)
     .then(function(response) {
       // handle success
-      console.log('good:::', response);
     })
     .catch(function(error) {
       // handle error
-      console.log('BAD:::', error);
     })
     .then(function() {
-      console.log('dodod')
       // always executed
     });
 };

@@ -15,25 +15,29 @@ import {
   Text,
 } from 'react-native';
 import 'react-native-gesture-handler';
+
+/** Navigation */
 import {NavigationContainer} from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
 
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 
+import UserLocation from './screens/UserLocation';
+import Landing from './screens/Landing';
+
 import {fetchAllShops} from './apis';
+
+const Stack = createStackNavigator();
 
 const App: () => React$Node = () => {
   fetchAllShops();
   return (
     <NavigationContainer>
       <StatusBar barStyle="dark-content" />
-      <SafeAreaView>
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={styles.scrollView}>
-          <Text>Landing will go here</Text>
-          <Text>Click to go next!</Text>
-        </ScrollView>
-      </SafeAreaView>
+      <Stack.Navigator initialRouteName="Landing">
+        <Stack.Screen name="Landing" component={Landing} />
+        <Stack.Screen name="UserLocation" component={UserLocation} />
+      </Stack.Navigator>
     </NavigationContainer>
   );
 };
