@@ -11,7 +11,10 @@ import {SafeAreaView, StyleSheet, ScrollView, StatusBar} from 'react-native';
 
 import {Header, Colors} from 'react-native/Libraries/NewAppScreen';
 
+import { fetchAllShops } from './apis';
+
 const App: () => React$Node = () => {
+  fetchAllShops();
   return (
     <>
       <StatusBar barStyle="dark-content" />
