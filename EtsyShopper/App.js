@@ -15,7 +15,7 @@ import {
   Text,
 } from 'react-native';
 import 'react-native-gesture-handler';
-
+navigator.geolocation = require('@react-native-community/geolocation');
 /** Navigation */
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
