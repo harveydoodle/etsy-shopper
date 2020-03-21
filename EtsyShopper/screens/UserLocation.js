@@ -11,7 +11,7 @@ import {fetchAddressSuggestions} from '../apis';
 
 import {LocationContext} from '../context/LocationContext';
 
-const UserLocation = () => {
+const UserLocation = ({navigation}) => {
   const [search, setSearch] = useState('');
   const [results, setResults] = useState([]);
 
@@ -29,6 +29,7 @@ const UserLocation = () => {
   };
   const handleSelectAddress = data => {
     location.set(data);
+    navigation.navigate('Categories');
   };
   return (
     <SafeAreaView style={{flex: 1}}>

@@ -20,12 +20,11 @@ import {LocationProvider} from './context/LocationContext';
 
 import UserLocation from './screens/UserLocation';
 import Landing from './screens/Landing';
-import {fetchAllShops} from './apis';
+import Categories from './screens/Categories';
 
 const Stack = createStackNavigator();
 
 const App: () => React$Node = () => {
-  fetchAllShops();
   return (
     <NavigationContainer>
       <LocationProvider>
@@ -33,6 +32,7 @@ const App: () => React$Node = () => {
         <Stack.Navigator initialRouteName="Landing">
           <Stack.Screen name="Landing" component={Landing} />
           <Stack.Screen name="UserLocation" component={UserLocation} />
+          <Stack.Screen name="Categories" component={Categories} />
         </Stack.Navigator>
       </LocationProvider>
     </NavigationContainer>

@@ -1,13 +1,7 @@
 import React from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  StatusBar,
-  Text,
-} from 'react-native';
+import {SafeAreaView, Text} from 'react-native';
 
-export default Landing = ({navigation}) => {
+const Landing = ({navigation}) => {
   return (
     <SafeAreaView style={{flex: 1}}>
       <Text
@@ -19,3 +13,5 @@ export default Landing = ({navigation}) => {
     </SafeAreaView>
   );
 };
+
+export default Landing;
