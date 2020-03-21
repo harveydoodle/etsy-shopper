@@ -7,9 +7,10 @@ export const LocationContext = createContext({});
 export const LocationProvider = ({children}) => {
   const [location, setLocation] = useState(initialLocation);
 
-  const set = useCallback(args => {
-    setLocation(args);
-  }, []);
+  const set = useCallback((args, cb) => {
+    setLocation({...location, ...args});
+    cb();
+  });
 
   return (
     <LocationContext.Provider

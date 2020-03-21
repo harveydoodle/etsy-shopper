@@ -6,14 +6,16 @@ import {
   Text,
   TextInput,
 } from 'react-native';
+import {get} from 'lodash';
 
-import {fetchAddressSuggestions} from '../apis';
+import {fetchAddressSuggestions, fetchGeolocation} from '../apis';
 
 import {LocationContext} from '../context/LocationContext';
 
 const UserLocation = ({navigation}) => {
   const [search, setSearch] = useState('');
   const [results, setResults] = useState([]);
+  const [address, setAddress] = useState({});
 
   const location = useContext(LocationContext);
 
@@ -24,13 +26,26 @@ const UserLocation = ({navigation}) => {
       });
     }
   }, [search]);
+
+  useEffect(() => {
+    if (address && address.description) {
+      fetchGeolocation(address.description, ({data}) => {
+        const coords = get(data, 'results.0.geometry.location');
+        const addressObject = {...address, coords};
+        location.set(addressObject);
+      });
+    }
+  }, [address]);
+
   const onChangeText = text => {
     setSearch(text);
   };
+
   const handleSelectAddress = data => {
-    location.set(data);
-    navigation.navigate('Categories');
+    setAddress(data);
+    navigation.navigate('Shops');
   };
+
   return (
     <SafeAreaView style={{flex: 1}}>
       <TouchableOpacity>

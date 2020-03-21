@@ -5,9 +5,11 @@ import {ETSY_APP_API_KEY, GOOGLE_MAPS_API_KEY} from './vars';
 
 const etsyBaseUrl = 'https://openapi.etsy.com/v2';
 
-export const fetchAllShops = () => {
+export const fetchAllShops = ({lat, long, distance}) => {
   axios
-    .get(`${etsyBaseUrl}/shops?api_key=${ETSY_APP_API_KEY}&limit=100`)
+    .get(
+      `${etsyBaseUrl}/shops?api_key=${ETSY_APP_API_KEY}&limit=100&lat=${lat}&lon=${long}&distance_max=${distance}`,
+    )
     .then(function(response) {
       // handle success
     })
@@ -37,7 +39,24 @@ export const fetchTopCategories = cb => {
 export const fetchAddressSuggestions = (address, cb) => {
   axios
     .get(
-      `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${address}&key=${GOOGLE_MAPS_API_KEY}&types=address&components=country:ca`,
+      `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${address}&key=${GOOGLE_MAPS_API_KEY}&types=geocode&components=country:ca`,
+    )
+    .then(function(response) {
+      cb && cb(response);
+      // handle success
+    })
+    .catch(function(error) {
+      // handle error
+    })
+    .then(function() {
+      // always executed
+    });
+};
+
+export const fetchGeolocation = (addressString, cb) => {
+  axios
+    .get(
+      `https://maps.googleapis.com/maps/api/geocode/json?address=${addressString}&key=${GOOGLE_MAPS_API_KEY}`,
     )
     .then(function(response) {
       cb && cb(response);

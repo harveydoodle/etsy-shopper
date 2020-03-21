@@ -21,6 +21,7 @@ import {LocationProvider} from './context/LocationContext';
 import UserLocation from './screens/UserLocation';
 import Landing from './screens/Landing';
 import Categories from './screens/Categories';
+import Shops from './screens/Shops';
 
 const Stack = createStackNavigator();
 
@@ -33,6 +34,7 @@ const App: () => React$Node = () => {
           <Stack.Screen name="Landing" component={Landing} />
           <Stack.Screen name="UserLocation" component={UserLocation} />
           <Stack.Screen name="Categories" component={Categories} />
+          <Stack.Screen name="Shops" component={Shops} />
         </Stack.Navigator>
       </LocationProvider>
     </NavigationContainer>
