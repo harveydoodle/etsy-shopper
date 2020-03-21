@@ -1,11 +1,11 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {SafeAreaView, Text} from 'react-native';
+import {SafeAreaView, Text, FlatList, View} from 'react-native';
 
 import {fetchAllShops} from '../apis';
 
 import {LocationContext} from '../context/LocationContext';
 
-const Categories = ({navigation}) => {
+const Shops = ({navigation}) => {
   const [shops, setShops] = useState([]);
   const location = useContext(LocationContext);
   const {lat, lng} = location.location;
@@ -16,8 +16,20 @@ const Categories = ({navigation}) => {
   return (
     <SafeAreaView style={{flex: 1}}>
       <Text>Select One:</Text>
+      <FlatList
+        numColumns={2}
+        data={shops}
+        horizontal={false}
+        renderItem={({item}) => (
+          <View style={{flex: 1, flexDirection: 'column'}}>
+            <Text style={{flex: 1, fontWeight: 'bold'}}>{item.shop_name}</Text>
+            <Text style={{flex: 1}}>{item.title}</Text>
+          </View>
+        )}
+        keyExtractor={item => `${item.shop_id}`}
+      />
     </SafeAreaView>
   );
 };
 
-export default Categories;
+export default Shops;
