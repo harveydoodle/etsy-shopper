@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {
   SafeAreaView,
   TouchableOpacity,
@@ -6,11 +6,16 @@ import {
   Text,
   TextInput,
 } from 'react-native';
+
 import {fetchAddressSuggestions} from '../apis';
+
+import {LocationContext} from '../context/LocationContext';
 
 const UserLocation = () => {
   const [search, setSearch] = useState('');
   const [results, setResults] = useState([]);
+
+  const location = useContext(LocationContext);
 
   useEffect(() => {
     if (search) {
@@ -22,7 +27,9 @@ const UserLocation = () => {
   const onChangeText = text => {
     setSearch(text);
   };
-
+  const handleSelectAddress = data => {
+    location.set(data);
+  };
   return (
     <SafeAreaView style={{flex: 1}}>
       <TouchableOpacity>
@@ -40,7 +47,11 @@ const UserLocation = () => {
       </TouchableOpacity>
       <FlatList
         data={results}
-        renderItem={({item}) => <Text>{item.description}</Text>}
+        renderItem={({item}) => (
+          <Text onPress={() => handleSelectAddress(item)}>
+            {item.description}
+          </Text>
+        )}
         keyExtractor={item => item.id}
       />
     </SafeAreaView>

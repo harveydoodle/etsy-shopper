@@ -7,13 +7,7 @@
  */
 
 import React from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  StatusBar,
-  Text,
-} from 'react-native';
+import {StyleSheet, StatusBar} from 'react-native';
 import 'react-native-gesture-handler';
 navigator.geolocation = require('@react-native-community/geolocation');
 /** Navigation */
@@ -21,6 +15,8 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 
 import {Colors} from 'react-native/Libraries/NewAppScreen';
+
+import {LocationProvider} from './context/LocationContext';
 
 import UserLocation from './screens/UserLocation';
 import Landing from './screens/Landing';
@@ -32,11 +28,13 @@ const App: () => React$Node = () => {
   fetchAllShops();
   return (
     <NavigationContainer>
-      <StatusBar barStyle="dark-content" />
-      <Stack.Navigator initialRouteName="Landing">
-        <Stack.Screen name="Landing" component={Landing} />
-        <Stack.Screen name="UserLocation" component={UserLocation} />
-      </Stack.Navigator>
+      <LocationProvider>
+        <StatusBar barStyle="dark-content" />
+        <Stack.Navigator initialRouteName="Landing">
+          <Stack.Screen name="Landing" component={Landing} />
+          <Stack.Screen name="UserLocation" component={UserLocation} />
+        </Stack.Navigator>
+      </LocationProvider>
     </NavigationContainer>
   );
 };
