@@ -8,10 +8,11 @@ import {LocationContext} from '../context/LocationContext';
 const Categories = ({navigation}) => {
   const [shops, setShops] = useState([]);
   const location = useContext(LocationContext);
-  console.log('location',location)
-  //   fetchAllShops({distance: 4, lat: lat, long: long}, res =>
-  //     console.log('eee', res),
-  //   );
+  const {lat, lng} = location.location;
+  fetchAllShops({distance: 4, lat: lat, long: lng}, ({data}) => {
+    const allShops = data.results;
+    setShops(allShops);
+  });
   return (
     <SafeAreaView style={{flex: 1}}>
       <Text>Select One:</Text>

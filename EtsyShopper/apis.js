@@ -5,12 +5,13 @@ import {ETSY_APP_API_KEY, GOOGLE_MAPS_API_KEY} from './vars';
 
 const etsyBaseUrl = 'https://openapi.etsy.com/v2';
 
-export const fetchAllShops = ({lat, long, distance}) => {
+export const fetchAllShops = ({lat, long, distance = 10}, cb) => {
   axios
     .get(
-      `${etsyBaseUrl}/shops?api_key=${ETSY_APP_API_KEY}&limit=100&lat=${lat}&lon=${long}&distance_max=${distance}`,
+      `${etsyBaseUrl}/shops?api_key=${ETSY_APP_API_KEY}&limit=20&lat=${lat}&lon=${long}&distance_max=${distance}`,
     )
     .then(function(response) {
+      cb && cb(response);
       // handle success
     })
     .catch(function(error) {

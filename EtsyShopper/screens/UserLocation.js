@@ -31,7 +31,7 @@ const UserLocation = ({navigation}) => {
     if (address && address.description) {
       fetchGeolocation(address.description, ({data}) => {
         const coords = get(data, 'results.0.geometry.location');
-        const addressObject = {...address, coords};
+        const addressObject = {...address, ...coords};
         location.set(addressObject);
       });
     }
