@@ -6,9 +6,7 @@ import {
   StatusBar,
   Text,
 } from 'react-native';
-import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
 import {fetchAddressSuggestions} from '../apis';
-const apiKey = process.env.GOOGLE_MAPS_API_KEY;
 
 const UserLocation = () => {
   const [address, setAddress] = useState('');
