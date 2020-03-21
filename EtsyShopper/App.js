@@ -24,7 +24,6 @@ import {Colors} from 'react-native/Libraries/NewAppScreen';
 
 import UserLocation from './screens/UserLocation';
 import Landing from './screens/Landing';
-
 import {fetchAllShops} from './apis';
 
 const Stack = createStackNavigator();
