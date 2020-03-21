@@ -1,26 +1,48 @@
 import React, {useState, useEffect} from 'react';
 import {
   SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  StatusBar,
+  TouchableOpacity,
+  FlatList,
   Text,
+  TextInput,
 } from 'react-native';
 import {fetchAddressSuggestions} from '../apis';
 
 const UserLocation = () => {
-  const [address, setAddress] = useState('');
+  const [search, setSearch] = useState('');
+  const [results, setResults] = useState([]);
+
   useEffect(() => {
-    if (address) {
-      console.log('search:', address);
-      fetchAddressSuggestions(address, res => {
-        console.log('data:::', res);
+    if (search) {
+      fetchAddressSuggestions(search, ({data}) => {
+        setResults(data.predictions);
       });
     }
-  }, [address]);
+  }, [search]);
+  const onChangeText = text => {
+    setSearch(text);
+  };
+
   return (
     <SafeAreaView style={{flex: 1}}>
-      <Text onPress={() => setAddress('1 Yonge Street')}>Hola</Text>
+      <TouchableOpacity>
+        <TextInput
+          style={{
+            height: 40,
+            borderColor: '#CCC',
+            borderWidth: 1,
+            margin: 2,
+            borderRadius: 17,
+          }}
+          onChangeText={text => onChangeText(text)}
+          value={search}
+        />
+      </TouchableOpacity>
+      <FlatList
+        data={results}
+        renderItem={({item}) => <Text>{item.description}</Text>}
+        keyExtractor={item => item.id}
+      />
     </SafeAreaView>
   );
 };
