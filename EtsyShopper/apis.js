@@ -39,7 +39,9 @@ export const fetchActiveListingsById = (id, cb) => {
 };
 export const fetchTopCategories = cb => {
   axios
-    .get(`${etsyBaseUrl}/taxonomy/categories?api_key=${ETSY_APP_API_KEY}`)
+    .get(
+      `${etsyBaseUrl}/taxonomy/categories?api_key=${ETSY_APP_API_KEY}&limit=10`,
+    )
     .then(function(response) {
       // handle success
       const minimalResults = get(response, 'data.results', []).splice(0, 6);
