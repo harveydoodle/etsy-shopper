@@ -1,2 +1,0 @@
-# etsy-shopper
-# etsy-shopper
