@@ -8,7 +8,7 @@ const etsyBaseUrl = 'https://openapi.etsy.com/v2';
 export const fetchAllShops = ({lat, long, distance = 10}, cb) => {
   axios
     .get(
-      `${etsyBaseUrl}/shops?api_key=${ETSY_APP_API_KEY}&limit=20&lat=${lat}&lon=${long}&distance_max=${distance}`,
+      `${etsyBaseUrl}/shops?api_key=${ETSY_APP_API_KEY}&fields=shop_id,shop_name,title&limit=20&lat=${lat}&lon=${long}&distance_max=${distance}`,
     )
     .then(function(response) {
       cb && cb(response);
@@ -24,7 +24,7 @@ export const fetchAllShops = ({lat, long, distance = 10}, cb) => {
 export const fetchActiveListingsById = (id, cb) => {
   axios
     .get(
-      `${etsyBaseUrl}/shops/${id}/listings/active?api_key=${ETSY_APP_API_KEY}`,
+      `${etsyBaseUrl}/shops/${id}/listings/active?api_key=${ETSY_APP_API_KEY}&limit=10&fields=listing_id,title,price&includes=MainImage`,
     )
     .then(function(response) {
       cb && cb(response);

@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {SafeAreaView, FlatList, View} from 'react-native';
+import {SafeAreaView, FlatList, View, Image} from 'react-native';
 
 import {fetchActiveListingsById} from '../apis';
 
@@ -10,6 +10,7 @@ const ShopDetails = ({navigation, route}) => {
   const {shop_id} = route.params;
   useEffect(() => {
     fetchActiveListingsById(shop_id, ({data}) => {
+      console.log('detials',data.results)
       setInventory(data.results);
     });
   }, [shop_id]);
@@ -35,6 +36,9 @@ const ShopDetails = ({navigation, route}) => {
               }}>
               <Text numberOfLines={3} style={{flex: 1, fontWeight: 'bold'}}>
                 {item.title}
+              </Text>
+              <Text numberOfLines={3} style={{flex: 1, fontWeight: 'bold'}}>
+                $ {item.price}
               </Text>
             </View>
           )}

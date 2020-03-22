@@ -9,7 +9,7 @@ const Categories = ({navigation}) => {
   const [categories, setCategories] = useState([]);
   return (
     <SafeAreaView style={{flex: 1}}>
-      <Text>Select One:</Text>
+      {/* <Text>Select One:</Text> */}
     </SafeAreaView>
   );
 };

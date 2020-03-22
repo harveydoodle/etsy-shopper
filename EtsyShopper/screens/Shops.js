@@ -13,6 +13,7 @@ const Shops = ({navigation}) => {
   useEffect(() => {
     fetchAllShops({distance: 4, lat: lat, long: lng}, ({data}) => {
       const allShops = data.results;
+      console.log('dallShopsetials',allShops)
       setShops(allShops);
     });
   }, [lat, lng]);
