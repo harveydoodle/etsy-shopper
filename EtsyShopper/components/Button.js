@@ -17,6 +17,7 @@ const CustomButton = props => (
         fontFamily: 'futura',
         fontSize: 18,
         color: '#fff',
+        ...props.textStyles,
       }}>
       {props.title}
     </Text>
