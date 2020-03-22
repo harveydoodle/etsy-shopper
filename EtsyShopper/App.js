@@ -23,6 +23,7 @@ import UserLocation from './screens/UserLocation';
 import Landing from './screens/Landing';
 import Categories from './screens/Categories';
 import Shops from './screens/Shops';
+import ShopDetail from './screens/ShopDetail';
 
 /** Constants */
 import {baseFontColor} from './styles/defaultStyles';
@@ -51,6 +52,7 @@ const App: () => React$Node = () => {
           />
           <Stack.Screen name="Categories" component={Categories} />
           <Stack.Screen name="Shops" component={Shops} />
+          <Stack.Screen name="ShopDetail" component={ShopDetail} />
         </Stack.Navigator>
       </LocationProvider>
     </NavigationContainer>

@@ -1,5 +1,5 @@
 import React, {useState, useContext} from 'react';
-import {SafeAreaView, FlatList, View} from 'react-native';
+import {SafeAreaView, FlatList, View, TouchableOpacity} from 'react-native';
 
 import {fetchAllShops} from '../apis';
 
@@ -15,7 +15,7 @@ const Shops = ({navigation}) => {
     setShops(allShops);
   });
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor:'#ffff'}}>
+    <SafeAreaView style={{flex: 1, backgroundColor: '#ffff'}}>
       <View style={{padding: 10}}>
         <Text>Select One:</Text>
         <FlatList
@@ -23,12 +23,14 @@ const Shops = ({navigation}) => {
           data={shops}
           horizontal={false}
           renderItem={({item}) => (
-            <View style={{flex: 1, flexDirection: 'column'}}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('ShopDetail', item.shop_id)}
+              style={{flex: 1, flexDirection: 'column'}}>
               <Text style={{flex: 1, fontWeight: 'bold'}}>
                 {item.shop_name}
               </Text>
               <Text style={{flex: 1}}>{item.title}</Text>
-            </View>
+            </TouchableOpacity>
           )}
           keyExtractor={item => `${item.shop_id}`}
         />
