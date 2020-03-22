@@ -1,5 +1,6 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {SafeAreaView, FlatList, View, TouchableOpacity} from 'react-native';
+import {SafeAreaView, FlatList, TouchableOpacity} from 'react-native';
+import {get} from 'lodash';
 
 import {fetchAllShops} from '../apis';
 
@@ -10,7 +11,8 @@ import Text from '../components/Text';
 const Shops = ({navigation}) => {
   const [shops, setShops] = useState([]);
   const location = useContext(LocationContext);
-  const {lat, lng} = location.location;
+  const {lat, lng, structured_formatting, description} = location.location;
+  const displayAddress = get(structured_formatting, 'main_text') || description;
   useEffect(() => {
     fetchAllShops({distance: 4, lat: lat, long: lng}, ({data}) => {
       const allShops = data.results;
@@ -24,7 +26,9 @@ const Shops = ({navigation}) => {
         numColumns={2}
         data={shops}
         ListHeaderComponent={
-          <Text style={{fontSize: 20}}>Select a store:</Text>
+          <Text style={{fontSize: 22}}>
+            Stores based around {displayAddress}:
+          </Text>
         }
         horizontal={false}
         contentContainerStyle={{

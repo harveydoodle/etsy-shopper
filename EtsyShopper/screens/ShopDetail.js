@@ -18,7 +18,7 @@ const ShopDetails = ({navigation, route}) => {
       <FlatList
         showsVerticalScrollIndicator={false}
         ListHeaderComponent={
-          <Text style={{fontSize: 20}}>Items available:</Text>
+          <Text style={{fontSize: 22}}>Items available:</Text>
         }
         numColumns={2}
         data={inventory}

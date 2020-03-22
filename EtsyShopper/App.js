@@ -40,25 +40,16 @@ const App: () => React$Node = () => {
             headerStyle: styles.navHeaderStyle,
             headerTintColor: baseFontColor,
             headerTitleStyle: styles.navHeaderTitleStyle,
+            headerBackTitle: ' ',
+            title: null,
+            headerBackStyle: styles.navHeaderBackStyle,
           }}
           initialRouteName="Landing">
           <Stack.Screen name="Landing" component={Landing} />
-          <Stack.Screen
-            name="UserLocation"
-            options={({route}) => ({
-              title: 'Your Location',
-            })}
-            component={UserLocation}
-          />
+          <Stack.Screen name="UserLocation" component={UserLocation} />
           <Stack.Screen name="Categories" component={Categories} />
           <Stack.Screen name="Shops" component={Shops} />
-          <Stack.Screen
-            name="ShopDetail"
-            component={ShopDetail}
-            options={({route}) => ({
-              title: '',
-            })}
-          />
+          <Stack.Screen name="ShopDetail" component={ShopDetail} />
         </Stack.Navigator>
       </LocationProvider>
     </NavigationContainer>
@@ -66,7 +57,9 @@ const App: () => React$Node = () => {
 };
 
 const styles = StyleSheet.create({
-  navHeaderStyle: {},
+  navHeaderStyle: {
+    shadowColor: 'transparent',
+  },
   navHeaderTitleStyle: {
     fontWeight: 'bold',
   },

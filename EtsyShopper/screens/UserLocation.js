@@ -68,6 +68,9 @@ const UserLocation = ({navigation}) => {
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#ffff'}}>
       <View style={{padding: 20, flex: 1}}>
+        <Text style={{fontSize: 22, paddingBottom: 10}}>
+          What's your address?
+        </Text>
         <TextInput
           style={{
             fontFamily: 'futura',
