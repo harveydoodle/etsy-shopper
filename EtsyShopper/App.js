@@ -31,10 +31,43 @@ const App: () => React$Node = () => {
       <LocationProvider>
         <StatusBar barStyle="dark-content" />
         <Stack.Navigator initialRouteName="Landing">
-          <Stack.Screen name="Landing" component={Landing} />
-          <Stack.Screen name="UserLocation" component={UserLocation} />
-          <Stack.Screen name="Categories" component={Categories} />
-          <Stack.Screen name="Shops" component={Shops} />
+          <Stack.Screen
+            name="Landing"
+            component={Landing}
+            options={({route}) => ({
+              headerStyle: styles.navHeaderStyle,
+              headerTintColor: '#464646',
+              headerTitleStyle: styles.navHeaderTitleStyle,
+            })}
+          />
+          <Stack.Screen
+            name="UserLocation"
+            options={({route}) => ({
+              title: 'Your Location',
+              headerStyle: styles.navHeaderStyle,
+              headerTintColor: '#464646',
+              headerTitleStyle: styles.navHeaderTitleStyle,
+            })}
+            component={UserLocation}
+          />
+          <Stack.Screen
+            name="Categories"
+            component={Categories}
+            options={({route}) => ({
+              headerStyle: styles.navHeaderStyle,
+              headerTintColor: '#464646',
+              headerTitleStyle: styles.navHeaderTitleStyle,
+            })}
+          />
+          <Stack.Screen
+            name="Shops"
+            component={Shops}
+            options={({route}) => ({
+              headerStyle: styles.navHeaderStyle,
+              headerTintColor: '#464646',
+              headerTitleStyle: styles.navHeaderTitleStyle,
+            })}
+          />
         </Stack.Navigator>
       </LocationProvider>
     </NavigationContainer>
@@ -42,41 +75,9 @@ const App: () => React$Node = () => {
 };
 
 const styles = StyleSheet.create({
-  scrollView: {
-    backgroundColor: Colors.lighter,
-  },
-  engine: {
-    position: 'absolute',
-    right: 0,
-  },
-  body: {
-    backgroundColor: Colors.white,
-  },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: Colors.black,
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-    color: Colors.dark,
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-  footer: {
-    color: Colors.dark,
-    fontSize: 12,
-    fontWeight: '600',
-    padding: 4,
-    paddingRight: 12,
-    textAlign: 'right',
+  navHeaderStyle: {},
+  navHeaderTitleStyle: {
+    fontWeight: 'bold',
   },
 });
 
