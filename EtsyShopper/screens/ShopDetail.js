@@ -1,33 +1,33 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {SafeAreaView, FlatList, View} from 'react-native';
 
 import {fetchActiveListingsById} from '../apis';
 
 import Text from '../components/Text';
-const ShopDetails = ({navigation, id}) => {
-  fetchActiveListingsById({id}, ({data}) => {
-    console.log('shop atal,.', data);
-  });
+const ShopDetails = ({navigation, route}) => {
+  const [inventory, setInventory] = useState([]);
+  const {shop_id} = route.params;
+  useEffect(() => {
+    fetchActiveListingsById(shop_id, ({data}) => {
+      setInventory(data.results);
+    });
+  }, [shop_id]);
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#ffff'}}>
-    <Text>Shop data:</Text>
-      {/* <View style={{padding: 10}}>
-        <Text>Select One:</Text>
+      <Text>Shop data:</Text>
+      <View style={{padding: 10}}>
         <FlatList
           numColumns={2}
-          data={shops}
+          data={inventory}
           horizontal={false}
           renderItem={({item}) => (
             <View style={{flex: 1, flexDirection: 'column'}}>
-              <Text style={{flex: 1, fontWeight: 'bold'}}>
-                {item.shop_name}
-              </Text>
-              <Text style={{flex: 1}}>{item.title}</Text>
+              <Text style={{flex: 1, fontWeight: 'bold'}}>{item.title}</Text>
             </View>
           )}
-          keyExtractor={item => `${item.shop_id}`}
+          keyExtractor={item => `${item.listing_id}`}
         />
-      </View> */}
+      </View>
     </SafeAreaView>
   );
 };

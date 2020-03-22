@@ -26,7 +26,9 @@ const Shops = ({navigation}) => {
           horizontal={false}
           renderItem={({item}) => (
             <TouchableOpacity
-              onPress={() => navigation.navigate('ShopDetail', item.shop_id)}
+              onPress={() =>
+                navigation.navigate('ShopDetail', {shop_id: item.shop_id})
+              }
               style={{flex: 1, flexDirection: 'column'}}>
               <Text style={{flex: 1, fontWeight: 'bold'}}>
                 {item.shop_name}
