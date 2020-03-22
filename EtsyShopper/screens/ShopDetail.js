@@ -1,11 +1,11 @@
 import React, {useState} from 'react';
 import {SafeAreaView, FlatList, View} from 'react-native';
 
-import {fetchShopById} from '../apis';
+import {fetchActiveListingsById} from '../apis';
 
 import Text from '../components/Text';
 const ShopDetails = ({navigation, id}) => {
-  fetchShopById({id}, ({data}) => {
+  fetchActiveListingsById({id}, ({data}) => {
     console.log('shop atal,.', data);
   });
   return (

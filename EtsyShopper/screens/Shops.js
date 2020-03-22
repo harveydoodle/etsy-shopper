@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {SafeAreaView, FlatList, View, TouchableOpacity} from 'react-native';
 
 import {fetchAllShops} from '../apis';
@@ -10,10 +10,12 @@ const Shops = ({navigation}) => {
   const [shops, setShops] = useState([]);
   const location = useContext(LocationContext);
   const {lat, lng} = location.location;
-  fetchAllShops({distance: 4, lat: lat, long: lng}, ({data}) => {
-    const allShops = data.results;
-    setShops(allShops);
-  });
+  useEffect(() => {
+    fetchAllShops({distance: 4, lat: lat, long: lng}, ({data}) => {
+      const allShops = data.results;
+      setShops(allShops);
+    });
+  }, [lat, lng]);
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#ffff'}}>
       <View style={{padding: 10}}>
