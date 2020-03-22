@@ -5,13 +5,13 @@ import {baseFontColor} from '../styles/defaultStyles';
 
 const CustomText = props => (
   <Text
+    {...props}
     style={{
       fontFamily: 'futura',
       fontSize: 16,
       color: baseFontColor,
       ...props.style,
-    }}
-    {...props}>
+    }}>
     {props.children}
   </Text>
 );

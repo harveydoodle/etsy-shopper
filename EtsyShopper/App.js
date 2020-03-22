@@ -52,7 +52,13 @@ const App: () => React$Node = () => {
           />
           <Stack.Screen name="Categories" component={Categories} />
           <Stack.Screen name="Shops" component={Shops} />
-          <Stack.Screen name="ShopDetail" component={ShopDetail} />
+          <Stack.Screen
+            name="ShopDetail"
+            component={ShopDetail}
+            options={({route}) => ({
+              title: '',
+            })}
+          />
         </Stack.Navigator>
       </LocationProvider>
     </NavigationContainer>

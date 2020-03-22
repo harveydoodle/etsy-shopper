@@ -67,23 +67,22 @@ const UserLocation = ({navigation}) => {
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#ffff'}}>
-      <View style={{padding: 20}}>
-        <TouchableOpacity>
-          <TextInput
-            style={{
-              height: 50,
-              borderColor: '#CCC',
-              borderWidth: 1,
-              margin: 2,
-              borderRadius: 15,
-              textAlignVertical: 'top',
-              paddingHorizontal: 8,
-            }}
-            onChangeText={text => onChangeText(text)}
-            value={search}
-            placeholder="Enter your address"
-          />
-        </TouchableOpacity>
+      <View style={{padding: 20, flex: 1}}>
+        <TextInput
+          style={{
+            fontFamily: 'futura',
+            height: 50,
+            borderColor: '#CCC',
+            borderWidth: 1,
+            margin: 2,
+            borderRadius: 15,
+            textAlignVertical: 'top',
+            paddingHorizontal: 8,
+          }}
+          onChangeText={text => onChangeText(text)}
+          value={search}
+          placeholder="Enter your address"
+        />
         <FlatList
           data={results}
           style={{paddingVertical: 10}}
