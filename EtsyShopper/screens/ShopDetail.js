@@ -10,7 +10,6 @@ const ShopDetails = ({navigation, route}) => {
   const {shop_id} = route.params;
   useEffect(() => {
     fetchActiveListingsById(shop_id, ({data}) => {
-      console.log('detials',data.results)
       setInventory(data.results);
     });
   }, [shop_id]);
@@ -27,19 +26,29 @@ const ShopDetails = ({navigation, route}) => {
               style={{
                 flex: 1,
                 flexDirection: 'column',
+                justifyContent: 'space-between',
                 borderWidth: 1,
-                borderColor: 'red',
+                borderColor: '#CCC',
                 height: 300,
                 borderRadius: 20,
                 padding: 20,
                 margin: 10,
               }}>
-              <Text numberOfLines={3} style={{flex: 1, fontWeight: 'bold'}}>
-                {item.title}
-              </Text>
-              <Text numberOfLines={3} style={{flex: 1, fontWeight: 'bold'}}>
+              <Image
+                style={{
+                  width: 125,
+                  height: 125,
+                  borderRadius: 2,
+                  alignSelf: 'center',
+                }}
+                source={{uri: item.MainImage.url_170x135}}
+              />
+              <Text
+                numberOfLines={3}
+                style={{fontSize: 20, fontWeight: 'bold'}}>
                 $ {item.price}
               </Text>
+              <Text numberOfLines={3}>{item.title}</Text>
             </View>
           )}
           keyExtractor={item => `${item.listing_id}`}
