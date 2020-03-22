@@ -1,8 +1,8 @@
 import React from 'react';
 import {Text} from 'react-native';
 
-const CustomText = ({children}) => (
-  <Text style={{fontFamily: 'futura'}}>{children}</Text>
+const CustomText = ({style, children}) => (
+  <Text style={{fontFamily: 'futura', ...style}}>{children}</Text>
 );
 
 export default CustomText;
