@@ -7,12 +7,12 @@ export const baseFontColor = '#464646';
 
 export const baseSpacing = 20;
 
-export const headerStyles = StyleSheet.create({
+export const headerStyles = {
   fontSize: 22,
   paddingBottom: 10,
-});
+};
 
-export const safeViewWrapper = StyleSheet.create({
+export const safeViewWrapper = {
   flex: 1,
   backgroundColor: '#ffff',
-});
+};
