@@ -1,9 +1,15 @@
 import React, {useState, useEffect} from 'react';
-import {SafeAreaView, FlatList, View, Image} from 'react-native';
+import {SafeAreaView, FlatList, View, Image, StyleSheet} from 'react-native';
 
 import {fetchActiveListingsById} from '../apis';
 
 import Text from '../components/Text';
+
+import {
+  headerStyles,
+  safeViewWrapper,
+  baseSpacing,
+} from '../styles/defaultStyles';
 
 const ShopDetails = ({navigation, route}) => {
   const [inventory, setInventory] = useState([]);
@@ -14,12 +20,10 @@ const ShopDetails = ({navigation, route}) => {
     });
   }, [shop_id]);
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: '#ffff'}}>
+    <SafeAreaView style={safeViewWrapper}>
       <FlatList
         showsVerticalScrollIndicator={false}
-        ListHeaderComponent={
-          <Text style={{fontSize: 22}}>Items available:</Text>
-        }
+        ListHeaderComponent={<Text style={headerStyles}>Items available:</Text>}
         numColumns={2}
         data={inventory}
         horizontal={false}
@@ -27,25 +31,9 @@ const ShopDetails = ({navigation, route}) => {
           padding: 10,
         }}
         renderItem={({item}) => (
-          <View
-            style={{
-              flex: 1,
-              flexDirection: 'column',
-              justifyContent: 'space-between',
-              borderWidth: 1,
-              borderColor: '#CCC',
-              height: 300,
-              borderRadius: 20,
-              padding: 20,
-              margin: 10,
-            }}>
+          <View style={styles.itemWrapper}>
             <Image
-              style={{
-                width: 125,
-                height: 125,
-                borderRadius: 2,
-                alignSelf: 'center',
-              }}
+              style={styles.image}
               source={{uri: item.MainImage.url_170x135}}
             />
             <Text numberOfLines={3} style={{fontSize: 20, fontWeight: 'bold'}}>
@@ -59,5 +47,25 @@ const ShopDetails = ({navigation, route}) => {
     </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  itemWrapper: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    borderWidth: 1,
+    borderColor: '#CCC',
+    height: 300,
+    borderRadius: 20,
+    padding: baseSpacing,
+    margin: 10,
+  },
+  image: {
+    width: 125,
+    height: 125,
+    borderRadius: 62.5,
+    alignSelf: 'center',
+  },
+});
 
 export default ShopDetails;

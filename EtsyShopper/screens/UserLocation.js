@@ -5,6 +5,7 @@ import {
   FlatList,
   TextInput,
   View,
+  StyleSheet,
 } from 'react-native';
 import {get} from 'lodash';
 import Geolocation from '@react-native-community/geolocation';
@@ -14,6 +15,12 @@ import {fetchAddressSuggestions, fetchGeolocation} from '../apis';
 import {LocationContext} from '../context/LocationContext';
 
 import Text from '../components/Text';
+
+import {
+  headerStyles,
+  safeViewWrapper,
+  baseSpacing,
+} from '../styles/defaultStyles';
 
 const AddressListItem = ({structured_formatting, description, onPress}) => {
   const {main_text, secondary_text} = structured_formatting;
@@ -89,41 +96,24 @@ const UserLocation = ({navigation}) => {
     );
 
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: '#ffff'}}>
-      <View style={{padding: 20, flex: 1}}>
-        <Text style={{fontSize: 22, paddingBottom: 10}}>
-          What's your address?
-        </Text>
+    <SafeAreaView style={safeViewWrapper}>
+      <View style={{padding: baseSpacing, flex: 1}}>
+        <Text style={headerStyles}>What's your address?</Text>
         <Text style={{marginBottom: 5}}>
-          <Text
-            onPress={getLocation}
-            style={{
-              fontWeight: 'bold',
-              color: '#ff871a',
-              textDecorationLine: 'underline',
-            }}>
+          <Text onPress={getLocation} style={styles.ownLocationText}>
             Use my location
           </Text>{' '}
           or:
         </Text>
         <TextInput
-          style={{
-            fontFamily: 'futura',
-            height: 50,
-            borderColor: '#CCC',
-            borderWidth: 1,
-            margin: 2,
-            borderRadius: 15,
-            textAlignVertical: 'top',
-            paddingHorizontal: 8,
-          }}
+          style={styles.searchBarText}
           onChangeText={text => onChangeText(text)}
           value={search}
           placeholder="Enter your address"
         />
         <FlatList
           data={results}
-          style={{paddingVertical: 10}}
+          style={styles.addressItemWrapper}
           renderItem={({item}) => (
             <AddressListItem
               onPress={() => handleSelectAddress(item)}
@@ -136,5 +126,24 @@ const UserLocation = ({navigation}) => {
     </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  addressItemWrapper: {paddingVertical: 10},
+  searchBarText: {
+    fontFamily: 'futura',
+    height: 50,
+    borderColor: '#CCC',
+    borderWidth: 1,
+    margin: 2,
+    borderRadius: 15,
+    textAlignVertical: 'top',
+    paddingHorizontal: 8,
+  },
+  ownLocationText: {
+    fontWeight: 'bold',
+    color: '#ff871a',
+    textDecorationLine: 'underline',
+  },
+});
 
 export default UserLocation;

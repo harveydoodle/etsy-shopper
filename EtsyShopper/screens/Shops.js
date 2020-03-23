@@ -1,5 +1,10 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {SafeAreaView, FlatList, TouchableOpacity} from 'react-native';
+import {
+  SafeAreaView,
+  FlatList,
+  TouchableOpacity,
+  StyleSheet,
+} from 'react-native';
 import {get} from 'lodash';
 
 import {fetchAllShops} from '../apis';
@@ -8,17 +13,11 @@ import {LocationContext} from '../context/LocationContext';
 
 import Text from '../components/Text';
 
-const colours = [
-  '#fdebef',
-  '#f8c8d2',
-  '#f4a5b5',
-  '#f08298',
-  '#eb5f7b',
-  '#f08298',
-  '#f4a5b5',
-  '#f8c8d2',
-  '#fdebef',
-];
+import {
+  headerStyles,
+  safeViewWrapper,
+  baseSpacing,
+} from '../styles/defaultStyles';
 
 const Shops = ({navigation}) => {
   const [shops, setShops] = useState([]);
@@ -41,35 +40,28 @@ const Shops = ({navigation}) => {
     });
   }, [lat, lng]);
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: '#ffff'}}>
+    <SafeAreaView style={safeViewWrapper}>
       <FlatList
         showsVerticalScrollIndicator={false}
         numColumns={2}
         data={shops}
         ListHeaderComponent={
           displayAddress && (
-            <Text style={{fontSize: 22}}>
+            <Text style={headerStyles}>
               Stores based around {displayAddress}:
             </Text>
           )
         }
         horizontal={false}
         contentContainerStyle={{
-          padding: 10,
+          padding: baseSpacing,
         }}
         renderItem={({item}, key) => (
           <TouchableOpacity
             onPress={() =>
               navigation.navigate('ShopDetail', {shop_id: item.shop_id})
             }
-            style={{
-              flex: 1,
-              flexDirection: 'column',
-              backgroundColor: '#ffe39a',
-              margin: 10,
-              padding: 20,
-              borderRadius: 8,
-            }}>
+            style={styles.itemWrapper}>
             <Text
               adjustsFontSizeToFit
               numberOfLines={1}
@@ -84,5 +76,16 @@ const Shops = ({navigation}) => {
     </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  itemWrapper: {
+    flex: 1,
+    flexDirection: 'column',
+    backgroundColor: '#ffe39a',
+    margin: 10,
+    padding: baseSpacing,
+    borderRadius: 8,
+  },
+});
 
 export default Shops;

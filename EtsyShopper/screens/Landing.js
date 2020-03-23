@@ -1,5 +1,5 @@
 import React from 'react';
-import {SafeAreaView, ScrollView, View} from 'react-native';
+import {SafeAreaView, ScrollView, View, StyleSheet} from 'react-native';
 import LottieView from 'lottie-react-native';
 
 /** Components */
@@ -7,22 +7,18 @@ import Text from '../components/Text';
 import Button from '../components/Button';
 
 /** Styles */
-import {deviceWidth, baseSpacing} from '../styles/defaultStyles';
+import {
+  deviceWidth,
+  baseSpacing,
+  safeAreaWrapper,
+} from '../styles/defaultStyles';
 
 const Landing = ({navigation}) => {
   return (
-    <SafeAreaView
-      style={{
-        flex: 1,
-        backgroundColor: '#fff',
-      }}>
+    <SafeAreaView style={safeAreaWrapper}>
       <ScrollView
         bounces={false}
-        contentContainerStyle={{
-          padding: baseSpacing,
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}>
+        contentContainerStyle={styles.scrollviewWrapper}>
         <View style={{flex: 0}}>
           <LottieView
             ref={animation => {
@@ -34,23 +30,8 @@ const Landing = ({navigation}) => {
           />
         </View>
         <View style={{flex: 0, alignItems: 'center'}}>
-          <Text
-            style={{
-              textAlign: 'center',
-              fontSize: 36,
-              fontWeight: 'bold',
-              marginBottom: 15,
-              flex: 0,
-            }}>
-            Hello!
-          </Text>
-          <Text
-            style={{
-              textAlign: 'center',
-              fontSize: 22,
-              marginBottom: 15,
-              flex: 0,
-            }}>
+          <Text style={styles.headerText}>Hello!</Text>
+          <Text style={styles.subheaderText}>
             Shop and support your small businesses in your area
           </Text>
           <Button
@@ -66,5 +47,26 @@ const Landing = ({navigation}) => {
     </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  scrollviewWrapper: {
+    padding: baseSpacing,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  headerText: {
+    textAlign: 'center',
+    fontSize: 36,
+    fontWeight: 'bold',
+    marginBottom: 15,
+    flex: 0,
+  },
+  subheaderText: {
+    textAlign: 'center',
+    fontSize: 22,
+    marginBottom: 15,
+    flex: 0,
+  },
+});
 
 export default Landing;
