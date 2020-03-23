@@ -28,14 +28,9 @@ export const fetchActiveListingsById = (id, cb) => {
     )
     .then(function(response) {
       cb && cb(response);
-      // handle success
     })
-    .catch(function(error) {
-      // handle error
-    })
-    .then(function() {
-      // always executed
-    });
+    .catch(function(error) {})
+    .then(function() {});
 };
 export const fetchTopCategories = cb => {
   axios
@@ -43,16 +38,11 @@ export const fetchTopCategories = cb => {
       `${etsyBaseUrl}/taxonomy/categories?api_key=${ETSY_APP_API_KEY}&limit=10`,
     )
     .then(function(response) {
-      // handle success
       const minimalResults = get(response, 'data.results', []).splice(0, 6);
-      cb(minimalResults);
+      cb && cb(minimalResults);
     })
-    .catch(function(error) {
-      // handle error
-    })
-    .then(function() {
-      // always executed
-    });
+    .catch(function(error) {})
+    .then(function() {});
 };
 
 export const fetchAddressSuggestions = (address, cb) => {
@@ -62,14 +52,9 @@ export const fetchAddressSuggestions = (address, cb) => {
     )
     .then(function(response) {
       cb && cb(response);
-      // handle success
     })
-    .catch(function(error) {
-      // handle error
-    })
-    .then(function() {
-      // always executed
-    });
+    .catch(function(error) {})
+    .then(function() {});
 };
 
 export const fetchGeolocation = (addressString, cb) => {
@@ -79,12 +64,7 @@ export const fetchGeolocation = (addressString, cb) => {
     )
     .then(function(response) {
       cb && cb(response);
-      // handle success
     })
-    .catch(function(error) {
-      // handle error
-    })
-    .then(function() {
-      // always executed
-    });
+    .catch(function(error) {})
+    .then(function() {});
 };

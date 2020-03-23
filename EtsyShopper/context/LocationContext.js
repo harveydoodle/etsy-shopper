@@ -9,7 +9,7 @@ export const LocationProvider = ({children}) => {
 
   const set = useCallback((args, cb) => {
     setLocation({...location, ...args});
-    cb();
+    cb && cb();
   });
 
   return (

@@ -5,14 +5,22 @@ import {
   FlatList,
   TextInput,
   View,
+  StyleSheet,
 } from 'react-native';
 import {get} from 'lodash';
+import Geolocation from '@react-native-community/geolocation';
 
 import {fetchAddressSuggestions, fetchGeolocation} from '../apis';
 
 import {LocationContext} from '../context/LocationContext';
 
 import Text from '../components/Text';
+
+import {
+  headerStyles,
+  safeViewWrapper,
+  baseSpacing,
+} from '../styles/defaultStyles';
 
 const AddressListItem = ({structured_formatting, description, onPress}) => {
   const {main_text, secondary_text} = structured_formatting;
@@ -47,12 +55,14 @@ const UserLocation = ({navigation}) => {
   }, [search]);
 
   useEffect(() => {
-    if (address && address.description) {
+    if (address && address.description && !address.is_custom) {
       fetchGeolocation(address.description, ({data}) => {
         const coords = get(data, 'results.0.geometry.location');
-        const addressObject = {...address, ...coords};
+        const addressObject = {...address, ...coords, ...{is_custom: false}};
         location.set(addressObject);
       });
+    } else if (address.is_custom) {
+      location.set(address);
     }
   }, [address]);
 
@@ -64,31 +74,46 @@ const UserLocation = ({navigation}) => {
     setAddress(data);
     navigation.navigate('Shops');
   };
+  const getLocation = () =>
+    Geolocation.getCurrentPosition(
+      info => {
+        if (info && info.coords) {
+          const {latitude, longitude} = info.coords;
+          const customAddressObj = {
+            is_custom: true,
+            description: 'my location',
+            lat: latitude,
+            lng: longitude,
+          };
+          setAddress(customAddressObj);
+          navigation.navigate('Shops');
+        }
+      },
+      error => {
+        console.warn(error);
+      },
+      {enableHighAccuracy: true, timeout: 20000, maximumAge: 10000},
+    );
 
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: '#ffff'}}>
-      <View style={{padding: 20, flex: 1}}>
-        <Text style={{fontSize: 22, paddingBottom: 10}}>
-          What's your address?
+    <SafeAreaView style={safeViewWrapper}>
+      <View style={{padding: baseSpacing, flex: 1}}>
+        <Text style={headerStyles}>What's your address?</Text>
+        <Text style={{marginBottom: 5}}>
+          <Text onPress={getLocation} style={styles.ownLocationText}>
+            Use my location
+          </Text>{' '}
+          or:
         </Text>
         <TextInput
-          style={{
-            fontFamily: 'futura',
-            height: 50,
-            borderColor: '#CCC',
-            borderWidth: 1,
-            margin: 2,
-            borderRadius: 15,
-            textAlignVertical: 'top',
-            paddingHorizontal: 8,
-          }}
+          style={styles.searchBarText}
           onChangeText={text => onChangeText(text)}
           value={search}
           placeholder="Enter your address"
         />
         <FlatList
           data={results}
-          style={{paddingVertical: 10}}
+          style={styles.addressItemWrapper}
           renderItem={({item}) => (
             <AddressListItem
               onPress={() => handleSelectAddress(item)}
@@ -101,5 +126,24 @@ const UserLocation = ({navigation}) => {
     </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  addressItemWrapper: {paddingVertical: 10},
+  searchBarText: {
+    fontFamily: 'futura',
+    height: 50,
+    borderColor: '#CCC',
+    borderWidth: 1,
+    margin: 2,
+    borderRadius: 15,
+    textAlignVertical: 'top',
+    paddingHorizontal: 8,
+  },
+  ownLocationText: {
+    fontWeight: 'bold',
+    color: '#ff871a',
+    textDecorationLine: 'underline',
+  },
+});
 
 export default UserLocation;
