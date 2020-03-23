@@ -8,11 +8,32 @@ import {LocationContext} from '../context/LocationContext';
 
 import Text from '../components/Text';
 
+const colours = [
+  '#fdebef',
+  '#f8c8d2',
+  '#f4a5b5',
+  '#f08298',
+  '#eb5f7b',
+  '#f08298',
+  '#f4a5b5',
+  '#f8c8d2',
+  '#fdebef',
+];
+
 const Shops = ({navigation}) => {
   const [shops, setShops] = useState([]);
   const location = useContext(LocationContext);
-  const {lat, lng, structured_formatting, description} = location.location;
-  const displayAddress = get(structured_formatting, 'main_text') || description;
+  const {
+    lat,
+    lng,
+    structured_formatting,
+    description,
+    is_custom,
+  } = location.location;
+
+  const displayAddress = is_custom
+    ? description
+    : get(structured_formatting, 'main_text') || description;
   useEffect(() => {
     fetchAllShops({distance: 4, lat: lat, long: lng}, ({data}) => {
       const allShops = data.results;
@@ -26,15 +47,17 @@ const Shops = ({navigation}) => {
         numColumns={2}
         data={shops}
         ListHeaderComponent={
-          <Text style={{fontSize: 22}}>
-            Stores based around {displayAddress}:
-          </Text>
+          displayAddress && (
+            <Text style={{fontSize: 22}}>
+              Stores based around {displayAddress}:
+            </Text>
+          )
         }
         horizontal={false}
         contentContainerStyle={{
           padding: 10,
         }}
-        renderItem={({item}) => (
+        renderItem={({item}, key) => (
           <TouchableOpacity
             onPress={() =>
               navigation.navigate('ShopDetail', {shop_id: item.shop_id})
@@ -42,10 +65,10 @@ const Shops = ({navigation}) => {
             style={{
               flex: 1,
               flexDirection: 'column',
-              backgroundColor: '#EEE',
+              backgroundColor: '#ffe39a',
               margin: 10,
               padding: 20,
-              borderRadius: 4,
+              borderRadius: 8,
             }}>
             <Text
               adjustsFontSizeToFit

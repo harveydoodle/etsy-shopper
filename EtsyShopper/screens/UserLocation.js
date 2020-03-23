@@ -51,7 +51,7 @@ const UserLocation = ({navigation}) => {
     if (address && address.description && !address.is_custom) {
       fetchGeolocation(address.description, ({data}) => {
         const coords = get(data, 'results.0.geometry.location');
-        const addressObject = {...address, ...coords};
+        const addressObject = {...address, ...coords, ...{is_custom: false}};
         location.set(addressObject);
       });
     } else if (address.is_custom) {
@@ -94,10 +94,14 @@ const UserLocation = ({navigation}) => {
         <Text style={{fontSize: 22, paddingBottom: 10}}>
           What's your address?
         </Text>
-        <Text>
+        <Text style={{marginBottom: 5}}>
           <Text
             onPress={getLocation}
-            style={{fontWeight: 'bold', color: 'orange'}}>
+            style={{
+              fontWeight: 'bold',
+              color: '#ff871a',
+              textDecorationLine: 'underline',
+            }}>
             Use my location
           </Text>{' '}
           or:
