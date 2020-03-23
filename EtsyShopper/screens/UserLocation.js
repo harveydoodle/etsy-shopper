@@ -7,6 +7,7 @@ import {
   View,
 } from 'react-native';
 import {get} from 'lodash';
+import Geolocation from '@react-native-community/geolocation';
 
 import {fetchAddressSuggestions, fetchGeolocation} from '../apis';
 
@@ -47,12 +48,14 @@ const UserLocation = ({navigation}) => {
   }, [search]);
 
   useEffect(() => {
-    if (address && address.description) {
+    if (address && address.description && !address.is_custom) {
       fetchGeolocation(address.description, ({data}) => {
         const coords = get(data, 'results.0.geometry.location');
         const addressObject = {...address, ...coords};
         location.set(addressObject);
       });
+    } else if (address.is_custom) {
+      location.set(address);
     }
   }, [address]);
 
@@ -64,12 +67,34 @@ const UserLocation = ({navigation}) => {
     setAddress(data);
     navigation.navigate('Shops');
   };
+  const getLocation = () =>
+    Geolocation.getCurrentPosition(info => {
+      if (info && info.coords) {
+        const {latitude, longitude} = info.coords;
+        const customAddressObj = {
+          is_custom: true,
+          description: 'my location',
+          lat: latitude,
+          lng: longitude,
+        };
+        setAddress(customAddressObj);
+        navigation.navigate('Shops');
+      }
+    });
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#ffff'}}>
       <View style={{padding: 20, flex: 1}}>
         <Text style={{fontSize: 22, paddingBottom: 10}}>
           What's your address?
+        </Text>
+        <Text>
+          <Text
+            onPress={getLocation}
+            style={{fontWeight: 'bold', color: 'orange'}}>
+            Use my location
+          </Text>{' '}
+          or:
         </Text>
         <TextInput
           style={{

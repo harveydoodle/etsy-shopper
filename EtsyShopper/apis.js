@@ -45,7 +45,7 @@ export const fetchTopCategories = cb => {
     .then(function(response) {
       // handle success
       const minimalResults = get(response, 'data.results', []).splice(0, 6);
-      cb(minimalResults);
+      cb && cb(minimalResults);
     })
     .catch(function(error) {
       // handle error
