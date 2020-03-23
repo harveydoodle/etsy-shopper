@@ -68,19 +68,25 @@ const UserLocation = ({navigation}) => {
     navigation.navigate('Shops');
   };
   const getLocation = () =>
-    Geolocation.getCurrentPosition(info => {
-      if (info && info.coords) {
-        const {latitude, longitude} = info.coords;
-        const customAddressObj = {
-          is_custom: true,
-          description: 'my location',
-          lat: latitude,
-          lng: longitude,
-        };
-        setAddress(customAddressObj);
-        navigation.navigate('Shops');
-      }
-    });
+    Geolocation.getCurrentPosition(
+      info => {
+        if (info && info.coords) {
+          const {latitude, longitude} = info.coords;
+          const customAddressObj = {
+            is_custom: true,
+            description: 'my location',
+            lat: latitude,
+            lng: longitude,
+          };
+          setAddress(customAddressObj);
+          navigation.navigate('Shops');
+        }
+      },
+      error => {
+        console.warn(error);
+      },
+      {enableHighAccuracy: true, timeout: 20000, maximumAge: 10000},
+    );
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#ffff'}}>
