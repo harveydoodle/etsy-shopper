@@ -133,7 +133,7 @@ const UserLocation = ({navigation}) => {
           placeholder="Enter your address"
         />
         <FlatList
-          ListEmptyComponent={<EmptyListText />}
+          ListEmptyComponent={!!search && <EmptyListText />}
           data={results}
           style={styles.addressItemWrapper}
           renderItem={({item}) => (

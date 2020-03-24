@@ -4,6 +4,7 @@ import {
   FlatList,
   TouchableOpacity,
   StyleSheet,
+  ActivityIndicator,
 } from 'react-native';
 import {get} from 'lodash';
 
@@ -22,6 +23,7 @@ import {
 
 const Shops = ({navigation}) => {
   const [shops, setShops] = useState([]);
+  const [loading, setLoading] = useState(true);
   const location = useContext(LocationContext);
   const {
     lat,
@@ -36,17 +38,25 @@ const Shops = ({navigation}) => {
     : get(structured_formatting, 'main_text') || description;
   useEffect(() => {
     fetchAllShops({distance: 4, lat: lat, long: lng}, ({data}) => {
+      setLoading(false);
       const allShops = data.results;
       setShops(allShops);
     });
   }, [lat, lng]);
+  if (loading) {
+    return (
+      <SafeAreaView style={{...safeViewWrapper, ...{justifyContent: 'center'}}}>
+        <ActivityIndicator size="large" style={{alignSelf: 'center'}} />
+      </SafeAreaView>
+    );
+  }
   return (
     <SafeAreaView style={safeViewWrapper}>
       <FlatList
         ListEmptyComponent={<EmptyListText />}
         showsVerticalScrollIndicator={false}
         numColumns={2}
-        data={[]}
+        data={shops}
         ListHeaderComponent={
           !!displayAddress && (
             <Text style={headerStyles}>

@@ -1,5 +1,12 @@
 import React, {useState, useEffect} from 'react';
-import {SafeAreaView, FlatList, View, Image, StyleSheet} from 'react-native';
+import {
+  SafeAreaView,
+  FlatList,
+  View,
+  Image,
+  StyleSheet,
+  ActivityIndicator,
+} from 'react-native';
 
 import {fetchActiveListingsById} from '../apis';
 
@@ -14,16 +21,25 @@ import {
 
 const ShopDetails = ({navigation, route}) => {
   const [inventory, setInventory] = useState([]);
+  const [loading, setLoading] = useState(true);
   const {shop_id} = route.params;
   useEffect(() => {
     fetchActiveListingsById(shop_id, ({data}) => {
+      setLoading(false);
       setInventory(data.results);
     });
   }, [shop_id]);
+  if (loading) {
+    return (
+      <SafeAreaView style={{...safeViewWrapper, ...{justifyContent: 'center'}}}>
+        <ActivityIndicator size="large" style={{alignSelf: 'center'}} />
+      </SafeAreaView>
+    );
+  }
   return (
     <SafeAreaView style={safeViewWrapper}>
       <FlatList
-          ListEmptyComponent={<EmptyListText />}
+        ListEmptyComponent={<EmptyListText />}
         showsVerticalScrollIndicator={false}
         ListHeaderComponent={<Text style={headerStyles}>Items available:</Text>}
         numColumns={2}
