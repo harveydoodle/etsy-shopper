@@ -22,17 +22,28 @@ import {
   baseSpacing,
 } from '../styles/defaultStyles';
 
-const AddressListItem = ({structured_formatting, description, onPress}) => {
+const AddressListItem = ({
+  structured_formatting,
+  description,
+  onPress,
+  disabled,
+}) => {
   const {main_text, secondary_text} = structured_formatting;
   if ((!main_text || !secondary_text) && description) {
     return (
-      <TouchableOpacity onPress={onPress} style={{paddingBottom: 10}}>
+      <TouchableOpacity
+        disabled={disabled}
+        onPress={onPress}
+        style={{paddingBottom: 10}}>
         <Text style={{fontWeight: 'bold'}}>{description}</Text>
       </TouchableOpacity>
     );
   }
   return (
-    <TouchableOpacity onPress={onPress} style={{paddingBottom: 10}}>
+    <TouchableOpacity
+      disabled={disabled}
+      onPress={onPress}
+      style={{paddingBottom: 10}}>
       <Text style={{fontWeight: 'bold'}}>{main_text}</Text>
       <Text>{secondary_text}</Text>
     </TouchableOpacity>
@@ -43,6 +54,7 @@ const UserLocation = ({navigation}) => {
   const [search, setSearch] = useState('');
   const [results, setResults] = useState([]);
   const [address, setAddress] = useState({});
+  const [loading, setLoading] = useState(false);
 
   const location = useContext(LocationContext);
 
@@ -71,10 +83,16 @@ const UserLocation = ({navigation}) => {
   };
 
   const handleSelectAddress = data => {
+    setLoading(true);
     setAddress(data);
+    setLoading(false);
     navigation.navigate('Shops');
   };
-  const getLocation = () =>
+  const getLocation = () => {
+    if (loading) {
+      return;
+    }
+    setLoading(true);
     Geolocation.getCurrentPosition(
       info => {
         if (info && info.coords) {
@@ -86,6 +104,7 @@ const UserLocation = ({navigation}) => {
             lng: longitude,
           };
           setAddress(customAddressObj);
+          setLoading(false);
           navigation.navigate('Shops');
         }
       },
@@ -94,6 +113,7 @@ const UserLocation = ({navigation}) => {
       },
       {enableHighAccuracy: true, timeout: 20000, maximumAge: 10000},
     );
+  };
 
   return (
     <SafeAreaView style={safeViewWrapper}>
@@ -116,6 +136,7 @@ const UserLocation = ({navigation}) => {
           style={styles.addressItemWrapper}
           renderItem={({item}) => (
             <AddressListItem
+              disabled={loading}
               onPress={() => handleSelectAddress(item)}
               {...item}
             />
