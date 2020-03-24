@@ -15,6 +15,7 @@ import {fetchAddressSuggestions, fetchGeolocation} from '../apis';
 import {LocationContext} from '../context/LocationContext';
 
 import Text from '../components/Text';
+import EmptyListText from '../components/EmptyListText';
 
 import {
   headerStyles,
@@ -132,6 +133,7 @@ const UserLocation = ({navigation}) => {
           placeholder="Enter your address"
         />
         <FlatList
+          ListEmptyComponent={<EmptyListText />}
           data={results}
           style={styles.addressItemWrapper}
           renderItem={({item}) => (

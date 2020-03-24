@@ -4,6 +4,7 @@ import {SafeAreaView, FlatList, View, Image, StyleSheet} from 'react-native';
 import {fetchActiveListingsById} from '../apis';
 
 import Text from '../components/Text';
+import EmptyListText from '../components/EmptyListText';
 
 import {
   headerStyles,
@@ -22,6 +23,7 @@ const ShopDetails = ({navigation, route}) => {
   return (
     <SafeAreaView style={safeViewWrapper}>
       <FlatList
+          ListEmptyComponent={<EmptyListText />}
         showsVerticalScrollIndicator={false}
         ListHeaderComponent={<Text style={headerStyles}>Items available:</Text>}
         numColumns={2}

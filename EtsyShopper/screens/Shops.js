@@ -12,6 +12,7 @@ import {fetchAllShops} from '../apis';
 import {LocationContext} from '../context/LocationContext';
 
 import Text from '../components/Text';
+import EmptyListText from '../components/EmptyListText';
 
 import {
   headerStyles,
@@ -42,11 +43,12 @@ const Shops = ({navigation}) => {
   return (
     <SafeAreaView style={safeViewWrapper}>
       <FlatList
+        ListEmptyComponent={<EmptyListText />}
         showsVerticalScrollIndicator={false}
         numColumns={2}
-        data={shops}
+        data={[]}
         ListHeaderComponent={
-          displayAddress && (
+          !!displayAddress && (
             <Text style={headerStyles}>
               Stores based around {displayAddress}:
             </Text>
