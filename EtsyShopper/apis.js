@@ -20,7 +20,8 @@ export const fetchAllShops = ({lat, long, distance = 10}, cb) => {
       // always executed
     });
 };
-export const fetchActiveListingsById = (id, cb) => {
+export const fetchActiveListingsById = (id, sort, cb) => {
+  console.log('sort',sort)
   axios
     .get(
       `${etsyBaseUrl}/shops/${id}/listings/active?api_key=${ETSY_APP_API_KEY}&limit=10&fields=listing_id,title,price&includes=MainImage`,

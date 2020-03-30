@@ -26,9 +26,16 @@ import {
   baseSpacing,
 } from '../styles/defaultStyles';
 
-const FilterOption = ({text, selected}) => {
+const filters = [
+  {key: 'price_ascending', title: 'Low to High'},
+  {key: 'price_descending', title: 'High to Low'},
+  {key: 'newest', title: 'Newest'},
+];
+
+const FilterOption = ({text, selected, onPress}) => {
   return (
     <TouchableOpacity
+      onPress={onPress}
       style={[
         {
           borderRadius: 16,
@@ -46,14 +53,50 @@ const FilterOption = ({text, selected}) => {
   );
 };
 
+const ListHeader = ({setSort, toggleSort, sortActive, sort}) => {
+  return (
+    <>
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+        }}>
+        <Text style={headerStyles}>Items available:</Text>
+        <TouchableOpacity
+          onPress={toggleSort}
+          style={{
+            flexDirection: 'row',
+          }}>
+          <Text>Sort </Text>
+          <Icon name="sort" />
+        </TouchableOpacity>
+      </View>
+      {sortActive && (
+        <Animated.View
+          style={{flexDirection: 'row', justifyContent: 'flex-end'}}>
+          {filters.map(filter => (
+            <FilterOption
+              onPress={() => setSort(filter.key)}
+              key={filter.key}
+              text={filter.title}
+              selected={filter.key === sort}
+            />
+          ))}
+        </Animated.View>
+      )}
+    </>
+  );
+};
+
 const ShopDetails = ({navigation, route}) => {
+  const [sort, setSort] = useState(null);
   const [inventory, setInventory] = useState([]);
   const [error, setError] = useState('');
   const [sortActive, setSortActive] = useState(false);
   const [loading, setLoading] = useState(true);
   const {shop_id} = route.params;
   useEffect(() => {
-    fetchActiveListingsById(shop_id, ({data, response}) => {
+    fetchActiveListingsById(shop_id, sort, ({data, response}) => {
       if (get(response, 'status') >= 400) {
         setLoading(false);
         setError('Something went wrong, please try again!');
@@ -64,7 +107,7 @@ const ShopDetails = ({navigation, route}) => {
       setLoading(false);
       setInventory(data.results);
     });
-  }, [shop_id]);
+  }, [shop_id, sort]);
   if (loading) {
     return (
       <SafeAreaView style={{...safeViewWrapper, ...{justifyContent: 'center'}}}>
@@ -76,38 +119,6 @@ const ShopDetails = ({navigation, route}) => {
     setSortActive(!sortActive);
   };
 
-  const renderHeader = () => {
-    return (
-      <>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-          }}>
-          <Text style={headerStyles}>Items available:</Text>
-
-          <TouchableOpacity
-            onPress={toggleSort}
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-            }}>
-            <Text style={{textDecorationLine: 'underline'}}>Sort </Text>
-            <Icon name="sort" />
-          </TouchableOpacity>
-        </View>
-        {sortActive && (
-          <Animated.View
-            style={{flexDirection: 'row', justifyContent: 'flex-end'}}>
-            <FilterOption text="Price" />
-            <FilterOption text="Newest" />
-          </Animated.View>
-        )}
-      </>
-    );
-  };
   return (
     <SafeAreaView style={safeViewWrapper}>
       <FlatList
@@ -115,7 +126,14 @@ const ShopDetails = ({navigation, route}) => {
           !error ? <EmptyListText /> : <ErrorText error={error} />
         }
         showsVerticalScrollIndicator={false}
-        ListHeaderComponent={renderHeader}
+        ListHeaderComponent={
+          <ListHeader
+            setSort={item => setSort(item)}
+            toggleSort={toggleSort}
+            sortActive={sortActive}
+            sort={sort}
+          />
+        }
         numColumns={2}
         data={inventory}
         horizontal={false}
