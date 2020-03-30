@@ -20,6 +20,8 @@ import ErrorText from '../components/ErrorText';
 
 import {
   headerStyles,
+  baseLightGrey,
+  baseOrange,
   safeViewWrapper,
   baseSpacing,
 } from '../styles/defaultStyles';
@@ -174,7 +176,7 @@ const styles = StyleSheet.create({
   searchBarText: {
     fontFamily: 'futura',
     height: 50,
-    borderColor: '#CCC',
+    borderColor: baseLightGrey,
     borderWidth: 1,
     margin: 2,
     borderRadius: 15,
@@ -183,7 +185,7 @@ const styles = StyleSheet.create({
   },
   ownLocationText: {
     fontWeight: 'bold',
-    color: '#ff871a',
+    color: baseOrange,
     textDecorationLine: 'underline',
   },
 });

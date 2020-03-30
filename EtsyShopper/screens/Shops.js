@@ -19,6 +19,7 @@ import ErrorText from '../components/ErrorText';
 import {
   headerStyles,
   safeViewWrapper,
+  baseLightOrange,
   baseSpacing,
 } from '../styles/defaultStyles';
 
@@ -104,7 +105,7 @@ const styles = StyleSheet.create({
   itemWrapper: {
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: '#ffe39a',
+    backgroundColor: baseLightOrange,
     margin: 10,
     padding: baseSpacing,
     borderRadius: 8,

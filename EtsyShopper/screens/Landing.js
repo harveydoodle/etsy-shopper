@@ -10,6 +10,7 @@ import Button from '../components/Button';
 import {
   deviceWidth,
   baseSpacing,
+  baseLightOrange,
   safeAreaWrapper,
 } from '../styles/defaultStyles';
 
@@ -37,7 +38,7 @@ const Landing = ({navigation}) => {
           <Button
             title="Get Started"
             textStyles={{fontSize: 24}}
-            backgroundColor="#fac472"
+            backgroundColor={baseLightOrange}
             onPress={() => {
               navigation.navigate('UserLocation');
             }}

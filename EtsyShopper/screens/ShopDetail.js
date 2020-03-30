@@ -4,8 +4,10 @@ import {
   FlatList,
   View,
   Image,
+  Animated,
   StyleSheet,
   ActivityIndicator,
+  TouchableOpacity,
 } from 'react-native';
 import {get} from 'lodash';
 import {Icon} from 'react-native-elements';
@@ -18,13 +20,36 @@ import ErrorText from '../components/ErrorText';
 
 import {
   headerStyles,
+  baseOrange,
+  baseLightGrey,
   safeViewWrapper,
   baseSpacing,
 } from '../styles/defaultStyles';
 
+const FilterOption = ({text, selected}) => {
+  return (
+    <TouchableOpacity
+      style={[
+        {
+          borderRadius: 16,
+          paddingVertical: baseSpacing / 4,
+          paddingHorizontal: baseSpacing / 2,
+          marginLeft: baseSpacing / 1.5,
+          backgroundColor: baseLightGrey,
+        },
+        selected && {
+          backgroundColor: baseOrange,
+        },
+      ]}>
+      <Text style={{color: '#fff'}}>{text}</Text>
+    </TouchableOpacity>
+  );
+};
+
 const ShopDetails = ({navigation, route}) => {
   const [inventory, setInventory] = useState([]);
   const [error, setError] = useState('');
+  const [sortActive, setSortActive] = useState(false);
   const [loading, setLoading] = useState(true);
   const {shop_id} = route.params;
   useEffect(() => {
@@ -47,19 +72,40 @@ const ShopDetails = ({navigation, route}) => {
       </SafeAreaView>
     );
   }
+  const toggleSort = () => {
+    setSortActive(!sortActive);
+  };
+
   const renderHeader = () => {
     return (
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-        }}>
-        <Text style={headerStyles}>Items available:</Text>
-        <Text style={{textDecorationLine: 'underline'}}>Sort by</Text>
+      <>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}>
+          <Text style={headerStyles}>Items available:</Text>
 
-        <Icon name="rowing" />
-      </View>
+          <TouchableOpacity
+            onPress={toggleSort}
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}>
+            <Text style={{textDecorationLine: 'underline'}}>Sort </Text>
+            <Icon name="sort" />
+          </TouchableOpacity>
+        </View>
+        {sortActive && (
+          <Animated.View
+            style={{flexDirection: 'row', justifyContent: 'flex-end'}}>
+            <FilterOption text="Price" />
+            <FilterOption text="Newest" />
+          </Animated.View>
+        )}
+      </>
     );
   };
   return (
@@ -100,7 +146,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'space-between',
     borderWidth: 1,
-    borderColor: '#CCC',
+    borderColor: baseLightGrey,
     height: 300,
     borderRadius: 20,
     padding: baseSpacing,
