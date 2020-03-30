@@ -21,11 +21,14 @@ export const fetchAllShops = ({lat, long, distance = 10}, cb) => {
     });
 };
 export const fetchActiveListingsById = (id, sort, cb) => {
-  console.log('sort',sort)
+  let ep = `${etsyBaseUrl}/shops/${id}/listings/active?api_key=${ETSY_APP_API_KEY}&limit=10&fields=listing_id,title,price&includes=MainImage`;
+  if (sort === 'price_ascending') {
+    ep = ep.concat('&sort_on=price&sort_order=up');
+  } else if (sort === 'price_descending') {
+    ep = ep.concat('&sort_on=price&sort_order=down');
+  }
   axios
-    .get(
-      `${etsyBaseUrl}/shops/${id}/listings/active?api_key=${ETSY_APP_API_KEY}&limit=10&fields=listing_id,title,price&includes=MainImage`,
-    )
+    .get(ep)
     .then(function(response) {
       cb && cb(response);
     })

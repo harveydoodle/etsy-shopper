@@ -89,7 +89,7 @@ const ListHeader = ({setSort, toggleSort, sortActive, sort}) => {
 };
 
 const ShopDetails = ({navigation, route}) => {
-  const [sort, setSort] = useState(null);
+  const [sort, setSort] = useState('newest');
   const [inventory, setInventory] = useState([]);
   const [error, setError] = useState('');
   const [sortActive, setSortActive] = useState(false);
