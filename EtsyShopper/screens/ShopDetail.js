@@ -8,6 +8,7 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import {get} from 'lodash';
+import {Icon} from 'react-native-elements';
 
 import {fetchActiveListingsById} from '../apis';
 
@@ -46,6 +47,21 @@ const ShopDetails = ({navigation, route}) => {
       </SafeAreaView>
     );
   }
+  const renderHeader = () => {
+    return (
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}>
+        <Text style={headerStyles}>Items available:</Text>
+        <Text style={{textDecorationLine: 'underline'}}>Sort by</Text>
+
+        <Icon name="rowing" />
+      </View>
+    );
+  };
   return (
     <SafeAreaView style={safeViewWrapper}>
       <FlatList
@@ -53,7 +69,7 @@ const ShopDetails = ({navigation, route}) => {
           !error ? <EmptyListText /> : <ErrorText error={error} />
         }
         showsVerticalScrollIndicator={false}
-        ListHeaderComponent={<Text style={headerStyles}>Items available:</Text>}
+        ListHeaderComponent={renderHeader}
         numColumns={2}
         data={inventory}
         horizontal={false}
