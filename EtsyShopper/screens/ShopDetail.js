@@ -7,11 +7,13 @@ import {
   StyleSheet,
   ActivityIndicator,
 } from 'react-native';
+import {get} from 'lodash';
 
 import {fetchActiveListingsById} from '../apis';
 
 import Text from '../components/Text';
 import EmptyListText from '../components/EmptyListText';
+import ErrorText from '../components/ErrorText';
 
 import {
   headerStyles,
@@ -21,10 +23,18 @@ import {
 
 const ShopDetails = ({navigation, route}) => {
   const [inventory, setInventory] = useState([]);
+  const [error, setError] = useState('');
   const [loading, setLoading] = useState(true);
   const {shop_id} = route.params;
   useEffect(() => {
-    fetchActiveListingsById(shop_id, ({data}) => {
+    fetchActiveListingsById(shop_id, ({data, response}) => {
+      if (get(response, 'status') >= 400) {
+        setLoading(false);
+        setError('Something went wrong, please try again!');
+        setInventory([]);
+        return;
+      }
+      setError('');
       setLoading(false);
       setInventory(data.results);
     });
@@ -39,7 +49,9 @@ const ShopDetails = ({navigation, route}) => {
   return (
     <SafeAreaView style={safeViewWrapper}>
       <FlatList
-        ListEmptyComponent={<EmptyListText />}
+        ListEmptyComponent={
+          !error ? <EmptyListText /> : <ErrorText error={error} />
+        }
         showsVerticalScrollIndicator={false}
         ListHeaderComponent={<Text style={headerStyles}>Items available:</Text>}
         numColumns={2}

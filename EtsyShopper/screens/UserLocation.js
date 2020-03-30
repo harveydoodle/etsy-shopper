@@ -16,6 +16,7 @@ import {LocationContext} from '../context/LocationContext';
 
 import Text from '../components/Text';
 import EmptyListText from '../components/EmptyListText';
+import ErrorText from '../components/ErrorText';
 
 import {
   headerStyles,
@@ -54,6 +55,7 @@ const AddressListItem = ({
 const UserLocation = ({navigation}) => {
   const [search, setSearch] = useState('');
   const [results, setResults] = useState([]);
+  const [error, setError] = useState('');
   const [address, setAddress] = useState({});
   const [loading, setLoading] = useState(false);
 
@@ -62,6 +64,12 @@ const UserLocation = ({navigation}) => {
   useEffect(() => {
     if (search) {
       fetchAddressSuggestions(search, ({data}) => {
+        if (data.error_message) {
+          setError('Something went wrong, try again!');
+          setResults([]);
+          return;
+        }
+        setError('');
         setResults(data.predictions);
       });
     }
@@ -110,12 +118,23 @@ const UserLocation = ({navigation}) => {
         }
       },
       error => {
+        setLoading(false);
+        setAddress({});
+        setError('Could not get your location, please try again.');
         console.warn(error);
       },
       {enableHighAccuracy: true, timeout: 20000, maximumAge: 10000},
     );
   };
 
+  const renderEmptyView = () => {
+    if (error) {
+      return <ErrorText />;
+    } else if (!!search) {
+      return <EmptyListText />;
+    }
+    return null;
+  };
   return (
     <SafeAreaView style={safeViewWrapper}>
       <View style={{padding: baseSpacing, flex: 1}}>
@@ -133,7 +152,7 @@ const UserLocation = ({navigation}) => {
           placeholder="Enter your address"
         />
         <FlatList
-          ListEmptyComponent={!!search && <EmptyListText />}
+          ListEmptyComponent={renderEmptyView}
           data={results}
           style={styles.addressItemWrapper}
           renderItem={({item}) => (

@@ -14,6 +14,7 @@ import {LocationContext} from '../context/LocationContext';
 
 import Text from '../components/Text';
 import EmptyListText from '../components/EmptyListText';
+import ErrorText from '../components/ErrorText';
 
 import {
   headerStyles,
@@ -23,6 +24,7 @@ import {
 
 const Shops = ({navigation}) => {
   const [shops, setShops] = useState([]);
+  const [error, setError] = useState('');
   const [loading, setLoading] = useState(true);
   const location = useContext(LocationContext);
   const {
@@ -37,8 +39,15 @@ const Shops = ({navigation}) => {
     ? description
     : get(structured_formatting, 'main_text') || description;
   useEffect(() => {
-    fetchAllShops({distance: 4, lat: lat, long: lng}, ({data}) => {
+    fetchAllShops({distance: 4, lat: lat, long: lng}, ({data, response}) => {
+      if (get(response, 'status') >= 400) {
+        setLoading(false);
+        setError('Something went wrong, please try again!');
+        setShops([]);
+        return;
+      }
       setLoading(false);
+      setError('');
       const allShops = data.results;
       setShops(allShops);
     });
@@ -53,7 +62,9 @@ const Shops = ({navigation}) => {
   return (
     <SafeAreaView style={safeViewWrapper}>
       <FlatList
-        ListEmptyComponent={<EmptyListText />}
+        ListEmptyComponent={
+          !error ? <EmptyListText /> : <ErrorText error={error} />
+        }
         showsVerticalScrollIndicator={false}
         numColumns={2}
         data={shops}
