@@ -6,7 +6,7 @@
  * @flow
  */
 
-import React from 'react';
+import React, {useState} from 'react';
 import {StyleSheet, StatusBar, Platform, UIManager} from 'react-native';
 import 'react-native-gesture-handler';
 
@@ -40,11 +40,31 @@ if (
 import {baseFontColor} from './styles/defaultStyles';
 
 const Stack = createStackNavigator();
+// Gets the current screen from navigation state
+const getActiveRouteName = state => {
+  const route = state.routes[state.index];
+
+  if (route.state) {
+    // Dive into nested navigators
+    return getActiveRouteName(route.state);
+  }
+
+  return route.name;
+};
 
 const App: () => React$Node = () => {
+  const [route, setRoute] = useState('Landing');
   const ref = React.useRef(null);
+
+  const showCartIcon = route !== 'Landing' && route !== 'ShoppingCart';
+
   return (
-    <NavigationContainer ref={ref}>
+    <NavigationContainer
+      onStateChange={state => {
+        const currentRouteName = getActiveRouteName(state);
+        setRoute(currentRouteName);
+      }}
+      ref={ref}>
       <LocationProvider>
         <CartProvider>
           <StatusBar barStyle="dark-content" />
@@ -65,9 +85,13 @@ const App: () => React$Node = () => {
             <Stack.Screen name="ShopDetail" component={ShopDetail} />
             <Stack.Screen name="ShoppingCart" component={ShoppingCart} />
           </Stack.Navigator>
-          <CartIcon
-            onPress={() => ref.current && ref.current.navigate('ShoppingCart')}
-          />
+          {showCartIcon && (
+            <CartIcon
+              onPress={() =>
+                ref.current && ref.current.navigate('ShoppingCart')
+              }
+            />
+          )}
         </CartProvider>
       </LocationProvider>
     </NavigationContainer>
