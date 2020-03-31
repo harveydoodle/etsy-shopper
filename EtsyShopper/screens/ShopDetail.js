@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {
   SafeAreaView,
   FlatList,
@@ -14,6 +14,8 @@ import {get} from 'lodash';
 import {Icon} from 'react-native-elements';
 
 import {fetchActiveListingsById} from '../apis';
+
+import {CartContext} from '../context/CartContext';
 
 import Text from '../components/Text';
 import EmptyListText from '../components/EmptyListText';
@@ -34,21 +36,41 @@ const filters = [
 ];
 
 const ListItem = ({item}) => {
+  const cart = useContext(CartContext);
   const [fadeAnim] = useState(new Animated.Value(0));
   useEffect(() => {
     Animated.timing(fadeAnim, {
       toValue: 1,
       duration: 600,
     }).start();
-  }, []);
+  });
+
+  const cartData = {
+    listing_id: item.listing_id,
+    sku: item.sku,
+    image: item.MainImage.url_170x135,
+    title: item.title,
+    price: item.price,
+  };
+
+  const handleAddToCard = () => {
+    let newCart = [cartData];
+    cart.update(newCart);
+  };
 
   return (
-    <Animated.View style={{...styles.itemWrapper, ...{opacity: fadeAnim}}}>
-      <Image style={styles.image} source={{uri: item.MainImage.url_170x135}} />
-      <Text numberOfLines={3} style={{fontSize: 20, fontWeight: 'bold'}}>
-        ${item.price}
-      </Text>
-      <Text numberOfLines={3}>{item.title}</Text>
+    <Animated.View
+      style={{...styles.itemContainerWrapper, ...{opacity: fadeAnim}}}>
+      <TouchableOpacity onPress={handleAddToCard} style={styles.itemsWrapper}>
+        <Image
+          style={styles.image}
+          source={{uri: item.MainImage.url_170x135}}
+        />
+        <Text numberOfLines={3} style={{fontSize: 20, fontWeight: 'bold'}}>
+          ${item.price}
+        </Text>
+        <Text numberOfLines={3}>{item.title}</Text>
+      </TouchableOpacity>
     </Animated.View>
   );
 };
@@ -169,16 +191,19 @@ const ShopDetails = ({navigation, route}) => {
 };
 
 const styles = StyleSheet.create({
-  itemWrapper: {
+  itemContainerWrapper: {
     flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'space-between',
     borderWidth: 1,
     borderColor: baseLightGrey,
     height: 300,
     borderRadius: 20,
     padding: baseSpacing,
     margin: 10,
+  },
+  itemsWrapper: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'space-between',
   },
   image: {
     width: 125,

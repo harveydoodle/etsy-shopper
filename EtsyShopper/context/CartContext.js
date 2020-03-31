@@ -1,21 +1,22 @@
 import React, {createContext, useState, useCallback} from 'react';
 
-const initialCart = {};
+const initialCart = [];
 
 export const CartContext = createContext({});
 
 export const CartProvider = ({children}) => {
-  const [cart, setCart] = useState(initialCart);
+  const [cart, updateCart] = useState(initialCart);
 
-  const set = useCallback((args, cb) => {
-    setCart({...cart, ...args});
+  const update = useCallback((args, cb) => {
+    const newCart = cart.concat(args);
+    updateCart(cart.concat(newCart));
     cb && cb();
   });
 
   return (
     <CartContext.Provider
       value={{
-        set,
+        update,
         cart,
       }}>
       {children}
