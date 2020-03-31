@@ -17,6 +17,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 
 /** Context */
 import {LocationProvider} from './context/LocationContext';
+import {CartProvider} from './context/CartContext';
 
 /** Screens */
 import UserLocation from './screens/UserLocation';
@@ -40,23 +41,25 @@ const App: () => React$Node = () => {
   return (
     <NavigationContainer>
       <LocationProvider>
-        <StatusBar barStyle="dark-content" />
-        <Stack.Navigator
-          screenOptions={{
-            headerStyle: styles.navHeaderStyle,
-            headerTintColor: baseFontColor,
-            headerTitleStyle: styles.navHeaderTitleStyle,
-            headerBackTitle: ' ',
-            title: null,
-            headerBackStyle: styles.navHeaderBackStyle,
-          }}
-          initialRouteName="Landing">
-          <Stack.Screen name="Landing" component={Landing} />
-          <Stack.Screen name="UserLocation" component={UserLocation} />
-          <Stack.Screen name="Categories" component={Categories} />
-          <Stack.Screen name="Shops" component={Shops} />
-          <Stack.Screen name="ShopDetail" component={ShopDetail} />
-        </Stack.Navigator>
+        <CartProvider>
+          <StatusBar barStyle="dark-content" />
+          <Stack.Navigator
+            screenOptions={{
+              headerStyle: styles.navHeaderStyle,
+              headerTintColor: baseFontColor,
+              headerTitleStyle: styles.navHeaderTitleStyle,
+              headerBackTitle: ' ',
+              title: null,
+              headerBackStyle: styles.navHeaderBackStyle,
+            }}
+            initialRouteName="Landing">
+            <Stack.Screen name="Landing" component={Landing} />
+            <Stack.Screen name="UserLocation" component={UserLocation} />
+            <Stack.Screen name="Categories" component={Categories} />
+            <Stack.Screen name="Shops" component={Shops} />
+            <Stack.Screen name="ShopDetail" component={ShopDetail} />
+          </Stack.Navigator>
+        </CartProvider>
       </LocationProvider>
     </NavigationContainer>
   );
