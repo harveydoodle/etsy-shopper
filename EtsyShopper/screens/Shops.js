@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   ActivityIndicator,
+  Animated,
 } from 'react-native';
 import {get} from 'lodash';
 
@@ -22,6 +23,33 @@ import {
   baseLightOrange,
   baseSpacing,
 } from '../styles/defaultStyles';
+
+const ListItem = ({item, navigation}) => {
+  const [fadeAnim] = useState(new Animated.Value(0));
+  useEffect(() => {
+    Animated.timing(fadeAnim, {
+      toValue: 1,
+      duration: 600,
+    }).start();
+  }, []);
+
+  return (
+    <Animated.View style={{...styles.itemWrapper, ...{opacity: fadeAnim}}}>
+      <TouchableOpacity
+        onPress={() =>
+          navigation.navigate('ShopDetail', {shop_id: item.shop_id})
+        }>
+        <Text
+          adjustsFontSizeToFit
+          numberOfLines={1}
+          style={{fontWeight: 'bold', fontSize: 20}}>
+          {item.shop_name}
+        </Text>
+        <Text numberOfLines={3}>{item.title}</Text>
+      </TouchableOpacity>
+    </Animated.View>
+  );
+};
 
 const Shops = ({navigation}) => {
   const [shops, setShops] = useState([]);
@@ -81,21 +109,8 @@ const Shops = ({navigation}) => {
           padding: baseSpacing,
         }}
         renderItem={({item}, key) => (
-          <TouchableOpacity
-            onPress={() =>
-              navigation.navigate('ShopDetail', {shop_id: item.shop_id})
-            }
-            style={styles.itemWrapper}>
-            <Text
-              adjustsFontSizeToFit
-              numberOfLines={1}
-              style={{fontWeight: 'bold', fontSize: 20}}>
-              {item.shop_name}
-            </Text>
-            <Text numberOfLines={3}>{item.title}</Text>
-          </TouchableOpacity>
+          <ListItem item={item} navigation={navigation} />
         )}
-        keyExtractor={item => `${item.shop_id}`}
       />
     </SafeAreaView>
   );

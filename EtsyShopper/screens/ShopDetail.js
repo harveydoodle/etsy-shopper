@@ -33,6 +33,26 @@ const filters = [
   {key: 'newest', title: 'Newest'},
 ];
 
+const ListItem = ({item}) => {
+  const [fadeAnim] = useState(new Animated.Value(0));
+  useEffect(() => {
+    Animated.timing(fadeAnim, {
+      toValue: 1,
+      duration: 600,
+    }).start();
+  }, []);
+
+  return (
+    <Animated.View style={{...styles.itemWrapper, ...{opacity: fadeAnim}}}>
+      <Image style={styles.image} source={{uri: item.MainImage.url_170x135}} />
+      <Text numberOfLines={3} style={{fontSize: 20, fontWeight: 'bold'}}>
+        ${item.price}
+      </Text>
+      <Text numberOfLines={3}>{item.title}</Text>
+    </Animated.View>
+  );
+};
+
 const FilterOption = ({text, selected, onPress}) => {
   return (
     <TouchableOpacity
@@ -88,7 +108,6 @@ const ListHeader = ({setSort, toggleSort, sortActive, sort}) => {
     </>
   );
 };
-
 const ShopDetails = ({navigation, route}) => {
   const [sort, setSort] = useState('newest');
   const [inventory, setInventory] = useState([]);
@@ -142,18 +161,7 @@ const ShopDetails = ({navigation, route}) => {
         contentContainerStyle={{
           padding: 10,
         }}
-        renderItem={({item}) => (
-          <View style={styles.itemWrapper}>
-            <Image
-              style={styles.image}
-              source={{uri: item.MainImage.url_170x135}}
-            />
-            <Text numberOfLines={3} style={{fontSize: 20, fontWeight: 'bold'}}>
-              ${item.price}
-            </Text>
-            <Text numberOfLines={3}>{item.title}</Text>
-          </View>
-        )}
+        renderItem={item => <ListItem {...item} />}
         keyExtractor={item => `${item.listing_id}`}
       />
     </SafeAreaView>
