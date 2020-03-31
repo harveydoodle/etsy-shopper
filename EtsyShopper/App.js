@@ -25,6 +25,10 @@ import Landing from './screens/Landing';
 import Categories from './screens/Categories';
 import Shops from './screens/Shops';
 import ShopDetail from './screens/ShopDetail';
+import ShoppingCart from './screens/ShoppingCart';
+
+/** Components */
+import CartIcon from './components/CartIcon';
 
 if (
   Platform.OS === 'android' &&
@@ -38,8 +42,9 @@ import {baseFontColor} from './styles/defaultStyles';
 const Stack = createStackNavigator();
 
 const App: () => React$Node = () => {
+  const ref = React.useRef(null);
   return (
-    <NavigationContainer>
+    <NavigationContainer ref={ref}>
       <LocationProvider>
         <CartProvider>
           <StatusBar barStyle="dark-content" />
@@ -58,7 +63,11 @@ const App: () => React$Node = () => {
             <Stack.Screen name="Categories" component={Categories} />
             <Stack.Screen name="Shops" component={Shops} />
             <Stack.Screen name="ShopDetail" component={ShopDetail} />
+            <Stack.Screen name="ShoppingCart" component={ShoppingCart} />
           </Stack.Navigator>
+          <CartIcon
+            onPress={() => ref.current && ref.current.navigate('ShoppingCart')}
+          />
         </CartProvider>
       </LocationProvider>
     </NavigationContainer>
