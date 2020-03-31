@@ -8,6 +8,7 @@ import {
   StyleSheet,
   ActivityIndicator,
   TouchableOpacity,
+  LayoutAnimation,
 } from 'react-native';
 import {get} from 'lodash';
 import {Icon} from 'react-native-elements';
@@ -116,6 +117,7 @@ const ShopDetails = ({navigation, route}) => {
     );
   }
   const toggleSort = () => {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
     setSortActive(!sortActive);
   };
 

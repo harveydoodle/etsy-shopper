@@ -7,7 +7,7 @@
  */
 
 import React from 'react';
-import {StyleSheet, StatusBar} from 'react-native';
+import {StyleSheet, StatusBar, Platform, UIManager} from 'react-native';
 import 'react-native-gesture-handler';
 
 /** Navigation */
@@ -25,6 +25,12 @@ import Categories from './screens/Categories';
 import Shops from './screens/Shops';
 import ShopDetail from './screens/ShopDetail';
 
+if (
+  Platform.OS === 'android' &&
+  UIManager.setLayoutAnimationEnabledExperimental
+) {
+  UIManager.setLayoutAnimationEnabledExperimental(true);
+}
 /** Constants */
 import {baseFontColor} from './styles/defaultStyles';
 
