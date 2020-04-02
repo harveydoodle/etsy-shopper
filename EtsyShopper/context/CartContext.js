@@ -1,4 +1,5 @@
 import React, {createContext, useState, useCallback} from 'react';
+import {findIndex} from 'lodash';
 
 const initialCart = [];
 
@@ -12,11 +13,35 @@ export const CartProvider = ({children}) => {
     updateCart(newCart);
     cb && cb();
   });
+  const add = useCallback((listing_id, cb) => {
+    const newCart = [...cart];
+    const index = findIndex(cart, {listing_id});
+    const matchedItem = cart[index];
+    matchedItem.quantity++;
+    newCart.splice(index, 1, matchedItem);
+    updateCart(newCart);
+    cb && cb();
+  });
+  const subtract = useCallback((listing_id, cb) => {
+    const newCart = [...cart];
+    const index = findIndex(cart, {listing_id});
+    const matchedItem = cart[index];
+    if (matchedItem.quantity === 1) {
+      newCart.splice(index, 1);
+    } else {
+      matchedItem.quantity--;
+      newCart.splice(index, 1, matchedItem);
+    }
+    updateCart(newCart);
+    cb && cb();
+  });
 
   return (
     <CartContext.Provider
       value={{
         update,
+        add,
+        subtract,
         cart,
       }}>
       {children}

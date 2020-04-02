@@ -109,6 +109,7 @@ const Shops = ({navigation}) => {
         contentContainerStyle={{
           padding: baseSpacing,
         }}
+        keyExtractor={item => `${item.shop_id}`}
         renderItem={({item}, key) => (
           <ListItem item={item} navigation={navigation} />
         )}

@@ -6,6 +6,7 @@ export const deviceHeight = Dimensions.get('window').height;
 export const baseFontColor = '#464646';
 export const errorFontColor = '#cc3300';
 
+export const baseLightestGrey = '#DDDDDD';
 export const baseLightGrey = '#CCCCCC';
 export const baseLightOrange = '#fac472';
 export const baseLightGrapefruit = '#ffaa80';

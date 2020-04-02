@@ -1,5 +1,12 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {SafeAreaView, FlatList, View, Image} from 'react-native';
+import {
+  SafeAreaView,
+  FlatList,
+  View,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native';
 
 import {CartContext} from '../context/CartContext';
 
@@ -8,9 +15,49 @@ import Text from '../components/Text';
 import {
   safeViewWrapper,
   headerStyles,
+  baseLightestGrey,
   baseSpacing,
   baseRadius,
 } from '../styles/defaultStyles';
+
+const styles = StyleSheet.create({
+  quantityWrapper: {
+    flex: 0,
+    minWidth: 25,
+    minHeight: 25,
+    marginLeft: baseSpacing / 2,
+    alignSelf: 'center',
+    justifyContent: 'center',
+    alignContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  quantityIconWrapper: {
+    borderRadius: 10,
+    height: 20,
+    width: 20,
+    backgroundColor: baseLightestGrey,
+    alignSelf: 'center',
+    justifyContent: 'center',
+    alignContent: 'center',
+    alignItems: 'center',
+  },
+  quantityIcon: {
+    fontSize: 13,
+    color: '#fff',
+  },
+  quantityText: {
+    fontSize: 17,
+    marginHorizontal: baseSpacing / 3,
+  },
+  image: {
+    height: 60,
+    width: 60,
+    marginRight: baseSpacing,
+    borderRadius: baseRadius,
+  },
+  rowWrapper: {flexDirection: 'row', marginBottom: baseSpacing},
+});
 
 const Header = () => {
   return (
@@ -21,32 +68,34 @@ const Header = () => {
 };
 
 const ListItem = ({item}) => {
-  console.log('item:', item);
+  const cart = useContext(CartContext);
   return (
-    <View style={{flexDirection: 'row', marginBottom: baseSpacing}}>
-      <Image
-        style={{
-          height: 100,
-          width: 100,
-          marginRight: baseSpacing,
-          borderRadius: baseRadius,
-        }}
-        source={{uri: item.image}}
-      />
+    <View style={styles.rowWrapper}>
+      <Image style={styles.image} source={{uri: item.image}} />
       <View style={{flex: 1}}>
-        <Text>{item.title}</Text>
-        <Text>{item.price}</Text>
+        <Text numberOfLines={3}>{item.title}</Text>
+        <Text style={{fontWeight: 'bold', fontSize: 13}}>${item.price}</Text>
       </View>
-      <View
-        style={{
-          flex: 0,
-          width: 25,
-          height: 25,
-          justifyContent: 'center',
-          alignItems: 'center',
-          alignContent: 'center',
-        }}>
-        <Text>{item.quantity}</Text>
+      <View style={styles.quantityWrapper}>
+        <TouchableOpacity
+          style={styles.quantityIconWrapper}
+          onPress={() => cart.subtract(item.listing_id)}>
+          <Text
+            style={{
+              ...styles.quantityIcon,
+              ...{
+                bottom: 1.5,
+              },
+            }}>
+            —
+          </Text>
+        </TouchableOpacity>
+        <Text style={styles.quantityText}>{item.quantity}</Text>
+        <TouchableOpacity
+          style={styles.quantityIconWrapper}
+          onPress={() => cart.add(item.listing_id)}>
+          <Text style={styles.quantityIcon}>+</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -58,6 +107,8 @@ const ShoppingCart = ({navigation}) => {
   return (
     <SafeAreaView style={safeViewWrapper}>
       <FlatList
+        showsVerticalScrollIndicator={false}
+        keyExtractor={item => `${item.listing_id}`}
         style={{padding: baseSpacing}}
         data={data}
         renderItem={item => <ListItem {...item} />}
