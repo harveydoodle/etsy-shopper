@@ -12,24 +12,29 @@ export const fetchAllShops = ({lat, long, distance = 10}, cb) => {
     )
     .then(function(response) {
       cb && cb(response);
-      // handle success
     })
     .catch(function(error) {
-      // handle error
+      cb && cb(error);
     })
     .then(function() {
       // always executed
     });
 };
-export const fetchActiveListingsById = (id, cb) => {
+export const fetchActiveListingsById = (id, sort, cb) => {
+  let ep = `${etsyBaseUrl}/shops/${id}/listings/active?api_key=${ETSY_APP_API_KEY}&limit=10&fields=listing_id,title,price&includes=MainImage`;
+  if (sort === 'price_ascending') {
+    ep = ep.concat('&sort_on=price&sort_order=up');
+  } else if (sort === 'price_descending') {
+    ep = ep.concat('&sort_on=price&sort_order=down');
+  }
   axios
-    .get(
-      `${etsyBaseUrl}/shops/${id}/listings/active?api_key=${ETSY_APP_API_KEY}&limit=10&fields=listing_id,title,price&includes=MainImage`,
-    )
+    .get(ep)
     .then(function(response) {
       cb && cb(response);
     })
-    .catch(function(error) {})
+    .catch(function(error) {
+      cb && cb(error);
+    })
     .then(function() {});
 };
 export const fetchTopCategories = cb => {
@@ -41,7 +46,9 @@ export const fetchTopCategories = cb => {
       const minimalResults = get(response, 'data.results', []).splice(0, 6);
       cb && cb(minimalResults);
     })
-    .catch(function(error) {})
+    .catch(function(error) {
+      cb && cb(error);
+    })
     .then(function() {});
 };
 
@@ -53,7 +60,9 @@ export const fetchAddressSuggestions = (address, cb) => {
     .then(function(response) {
       cb && cb(response);
     })
-    .catch(function(error) {})
+    .catch(function(error) {
+      cb && cb(error);
+    })
     .then(function() {});
 };
 
@@ -65,6 +74,8 @@ export const fetchGeolocation = (addressString, cb) => {
     .then(function(response) {
       cb && cb(response);
     })
-    .catch(function(error) {})
+    .catch(function(error) {
+      cb && cb(error);
+    })
     .then(function() {});
 };
