@@ -48,6 +48,7 @@ const ListItem = ({item}) => {
   const cartData = {
     listing_id: item.listing_id,
     sku: item.sku,
+    quantity: 1,
     image: item.MainImage.url_170x135,
     title: item.title,
     price: item.price,
