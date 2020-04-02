@@ -10,7 +10,7 @@ import {
   TouchableOpacity,
   LayoutAnimation,
 } from 'react-native';
-import {get} from 'lodash';
+import {get, delay} from 'lodash';
 import {Icon} from 'react-native-elements';
 
 import {fetchActiveListingsById} from '../apis';
@@ -26,6 +26,7 @@ import {
   baseOrange,
   baseLightGrey,
   safeViewWrapper,
+  baseDarkBlue,
   baseSpacing,
 } from '../styles/defaultStyles';
 
@@ -38,6 +39,7 @@ const filters = [
 const ListItem = ({item}) => {
   const cart = useContext(CartContext);
   const [fadeAnim] = useState(new Animated.Value(0));
+  const [checkmark, setCheckmark] = useState(false);
   useEffect(() => {
     Animated.timing(fadeAnim, {
       toValue: 1,
@@ -53,8 +55,12 @@ const ListItem = ({item}) => {
     title: item.title,
     price: item.price,
   };
-
+  const makeDisable = () => {
+    setCheckmark(true);
+    delay(() => setCheckmark(false), 1000);
+  };
   const handleAddToCard = () => {
+    makeDisable();
     let newCart = [cartData];
     cart.update(newCart);
   };
@@ -62,11 +68,19 @@ const ListItem = ({item}) => {
   return (
     <Animated.View
       style={{...styles.itemContainerWrapper, ...{opacity: fadeAnim}}}>
-      <TouchableOpacity onPress={handleAddToCard} style={styles.itemsWrapper}>
+      <TouchableOpacity
+        disabled={checkmark}
+        onPress={handleAddToCard}
+        style={styles.itemsWrapper}>
         <Image
           style={styles.image}
           source={{uri: item.MainImage.url_170x135}}
         />
+        {checkmark && (
+          <View style={styles.checkmark}>
+            <Icon name="check" size={52} color={baseDarkBlue} />
+          </View>
+        )}
         <Text numberOfLines={3} style={{fontSize: 20, fontWeight: 'bold'}}>
           ${item.price}
         </Text>
@@ -211,6 +225,18 @@ const styles = StyleSheet.create({
     height: 125,
     borderRadius: 62.5,
     alignSelf: 'center',
+  },
+  checkmark: {
+    position: 'absolute',
+    top: 0,
+    left: 5,
+    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+    width: 125,
+    height: 125,
+    borderRadius: 62.5,
+    alignItems: 'center',
+    justifyContent: 'center',
+    alignContent: 'center',
   },
 });
 

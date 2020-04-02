@@ -11,6 +11,7 @@ export const baseLightGrey = '#CCCCCC';
 export const baseLightOrange = '#fac472';
 export const baseLightGrapefruit = '#ffaa80';
 export const baseBlue = '#80ccff';
+export const baseDarkBlue = '#467697';
 export const baseOrange = '#ff871a';
 
 export const baseSpacing = 20;
