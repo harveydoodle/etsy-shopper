@@ -8,10 +8,16 @@ export const CartContext = createContext({});
 export const CartProvider = ({children}) => {
   const [cart, updateCart] = useState(initialCart);
 
-  const update = useCallback((args, cb) => {
-    const newCart = cart.concat(args);
-    updateCart(newCart);
-    cb && cb();
+  const update = useCallback((args = [], cb) => {
+    const {listing_id} = args[0];
+    const existsInCart = findIndex(cart, {listing_id}) > -1;
+    if (existsInCart) {
+      add(listing_id);
+    } else {
+      const newCart = cart.concat(args);
+      updateCart(newCart);
+      cb && cb();
+    }
   });
   const add = useCallback((listing_id, cb) => {
     const newCart = [...cart];
