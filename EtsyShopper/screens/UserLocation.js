@@ -60,6 +60,7 @@ const UserLocation = ({navigation}) => {
   const [error, setError] = useState('');
   const [address, setAddress] = useState({});
   const [loading, setLoading] = useState(false);
+  const [searchLoading, setSearchLoading] = useState(false);
 
   const location = useContext(LocationContext);
 
@@ -68,10 +69,12 @@ const UserLocation = ({navigation}) => {
       fetchAddressSuggestions(search, ({data}) => {
         if (data.error_message) {
           setError('Something went wrong, try again!');
+          setSearchLoading(false);
           setResults([]);
           return;
         }
         setError('');
+        setSearchLoading(false);
         setResults(data.predictions);
       });
     }
@@ -90,6 +93,7 @@ const UserLocation = ({navigation}) => {
   }, [address]);
 
   const onChangeText = text => {
+    setSearchLoading(true);
     setSearch(text);
   };
 
@@ -130,6 +134,9 @@ const UserLocation = ({navigation}) => {
   };
 
   const renderEmptyView = () => {
+    if (searchLoading) {
+      return null;
+    }
     if (error) {
       return <ErrorText />;
     } else if (!!search) {

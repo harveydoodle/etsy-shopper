@@ -3,7 +3,9 @@ import {StyleSheet} from 'react-native';
 
 import Text from './Text';
 
-const EmptyListText = () => <Text style={styles.text}>No results found</Text>;
+const EmptyListText = ({text}) => (
+  <Text style={styles.text}>{text || 'No results found'}</Text>
+);
 
 const styles = StyleSheet.create({
   text: {

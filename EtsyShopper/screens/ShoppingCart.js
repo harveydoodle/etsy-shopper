@@ -11,6 +11,7 @@ import {
 import {CartContext} from '../context/CartContext';
 
 import Text from '../components/Text';
+import EmptyListText from '../components/EmptyListText';
 
 import {
   safeViewWrapper,
@@ -62,7 +63,7 @@ const styles = StyleSheet.create({
 const Header = () => {
   return (
     <View>
-      <Text style={headerStyles}>Shopping cart</Text>
+      <Text style={headerStyles}>Shopping cart:</Text>
     </View>
   );
 };
@@ -113,6 +114,7 @@ const ShoppingCart = ({navigation}) => {
         data={data}
         renderItem={item => <ListItem {...item} />}
         ListHeaderComponent={<Header />}
+        ListEmptyComponent={<EmptyListText text="No items added" />}
       />
     </SafeAreaView>
   );
