@@ -1,20 +1,52 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {SafeAreaView, FlatList, View} from 'react-native';
+import {SafeAreaView, FlatList, View, Image} from 'react-native';
 
 import {CartContext} from '../context/CartContext';
 
 import Text from '../components/Text';
 
-import {baseSpacing} from '../styles/defaultStyles';
+import {
+  safeViewWrapper,
+  headerStyles,
+  baseSpacing,
+  baseRadius,
+} from '../styles/defaultStyles';
+
+const Header = () => {
+  return (
+    <View>
+      <Text style={headerStyles}>Shopping cart</Text>
+    </View>
+  );
+};
 
 const ListItem = ({item}) => {
   console.log('item:', item);
   return (
     <View style={{flexDirection: 'row', marginBottom: baseSpacing}}>
-      <Text style={{flex: 1}}>{item.title}</Text>
-      <View style={{flex: 0}}>
-        <Text>{item.quantity}</Text>
+      <Image
+        style={{
+          height: 100,
+          width: 100,
+          marginRight: baseSpacing,
+          borderRadius: baseRadius,
+        }}
+        source={{uri: item.image}}
+      />
+      <View style={{flex: 1}}>
+        <Text>{item.title}</Text>
         <Text>{item.price}</Text>
+      </View>
+      <View
+        style={{
+          flex: 0,
+          width: 25,
+          height: 25,
+          justifyContent: 'center',
+          alignItems: 'center',
+          alignContent: 'center',
+        }}>
+        <Text>{item.quantity}</Text>
       </View>
     </View>
   );
@@ -24,11 +56,12 @@ const ShoppingCart = ({navigation}) => {
   const cart = useContext(CartContext);
   const data = cart.cart;
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor:'#fff'}}>
+    <SafeAreaView style={safeViewWrapper}>
       <FlatList
+        style={{padding: baseSpacing}}
         data={data}
         renderItem={item => <ListItem {...item} />}
-        ListHeaderComponent={<Text>Shopping cart</Text>}
+        ListHeaderComponent={<Header />}
       />
     </SafeAreaView>
   );

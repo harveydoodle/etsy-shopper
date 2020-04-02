@@ -9,7 +9,7 @@ export const CartProvider = ({children}) => {
 
   const update = useCallback((args, cb) => {
     const newCart = cart.concat(args);
-    updateCart(cart.concat(newCart));
+    updateCart(newCart);
     cb && cb();
   });
 

@@ -22,6 +22,7 @@ import {
   safeViewWrapper,
   baseLightOrange,
   baseSpacing,
+  baseRadius,
 } from '../styles/defaultStyles';
 
 const ListItem = ({item, navigation}) => {
@@ -123,7 +124,7 @@ const styles = StyleSheet.create({
     backgroundColor: baseLightOrange,
     margin: 10,
     padding: baseSpacing,
-    borderRadius: 8,
+    borderRadius: baseRadius,
   },
 });
 

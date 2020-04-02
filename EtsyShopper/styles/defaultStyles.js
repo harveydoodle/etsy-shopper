@@ -13,6 +13,7 @@ export const baseBlue = '#80ccff';
 export const baseOrange = '#ff871a';
 
 export const baseSpacing = 20;
+export const baseRadius = 8;
 
 export const headerStyles = {
   fontSize: 22,
