@@ -6,13 +6,16 @@ export const deviceHeight = Dimensions.get('window').height;
 export const baseFontColor = '#464646';
 export const errorFontColor = '#cc3300';
 
+export const baseLightestGrey = '#DDDDDD';
 export const baseLightGrey = '#CCCCCC';
 export const baseLightOrange = '#fac472';
 export const baseLightGrapefruit = '#ffaa80';
 export const baseBlue = '#80ccff';
+export const baseDarkBlue = '#467697';
 export const baseOrange = '#ff871a';
 
 export const baseSpacing = 20;
+export const baseRadius = 8;
 
 export const headerStyles = {
   fontSize: 22,

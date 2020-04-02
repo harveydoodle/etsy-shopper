@@ -22,6 +22,7 @@ import {
   safeViewWrapper,
   baseLightOrange,
   baseSpacing,
+  baseRadius,
 } from '../styles/defaultStyles';
 
 const ListItem = ({item, navigation}) => {
@@ -108,6 +109,7 @@ const Shops = ({navigation}) => {
         contentContainerStyle={{
           padding: baseSpacing,
         }}
+        keyExtractor={item => `${item.shop_id}`}
         renderItem={({item}, key) => (
           <ListItem item={item} navigation={navigation} />
         )}
@@ -123,7 +125,7 @@ const styles = StyleSheet.create({
     backgroundColor: baseLightOrange,
     margin: 10,
     padding: baseSpacing,
-    borderRadius: 8,
+    borderRadius: baseRadius,
   },
 });
 
