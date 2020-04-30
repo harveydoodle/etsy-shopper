@@ -22,7 +22,7 @@ yarn start
 react-native run-ios
 ```
 
-## Building iOS:
+## Building Android:
 
 **Ensure you have an Android Emulator running already**
 
